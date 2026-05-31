@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ANY REQUEST PASS</title>
+
+<style>
+body{
+  margin:0;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-family:sans-serif;
+  color:white;
+  transition:1s;
+}
+
+.wrap{
+  width:90%;
+  max-width:390px;
+  text-align:center;
+}
+
+.ticket{
+  width:100%;
+  border-radius:24px;
+  transition:1s;
+  animation:floatTicket 3s ease-in-out infinite;
+}
+
+textarea{
+  width:90%;
+  margin-top:16px;
+  padding:12px;
+  border-radius:16px;
+  border:1px solid #d946ef;
+  background:#2b0036;
+  color:white;
+  font-size:15px;
+  resize:none;
+}
+
+textarea::placeholder{
+  color:#c084fc;
+}
+
+.status{
+  margin-top:16px;
+  font-size:22px;
+  font-weight:bold;
+}
+#seasonTitle{
+  margin-top:12px;
+  margin-bottom:8px;
+  font-size:22px;
+  font-weight:bold;
+  color:white;
+  text-shadow:0 0 15px #7dd3fc;
+}
+
+button{
+  margin-top:14px;
+  padding:14px 34px;
+  border:0;
+  border-radius:999px;
+  background:#d946ef;
+  color:white;
+  font-size:16px;
+  font-weight:bold;
+}
+button{
+  display:block;
+  width:90%;
+  margin:10px auto;
+}
+.used button{
+  background:gray;
+}
+
+.used .status{
+  color:#ff4b4b;
+}
+
+.used{
+  background:radial-gradient(circle, #4a0000, #160000);
+}
+
+.stamp{
+  display:none;
+  position:fixed;
+  top:40%;
+  left:50%;
+  transform:translate(-50%, -50%) rotate(-18deg);
+  border:4px solid #ff4b4b;
+  color:#ff4b4b;
+  font-size:28px;
+  font-weight:bold;
+  text-align:center;
+  line-height:1.3;
+  padding:10px 24px;
+  border-radius:12px;
+  letter-spacing:4px;
+  opacity:0.9;
+  z-index:10;
+}
+
+.used .stamp{
+  display:block;
+  animation:stampPop 0.5s ease;
+}
+
+.scan-line{
+  display:none;
+  position:fixed;
+  top:25%;
+  left:50%;
+  width:260px;
+  height:3px;
+  background:#ff4bff;
+  box-shadow:0 0 18px #ff4bff;
+  transform:translateX(-50%);
+  z-index:20;
+}
+
+.scanning .scan-line{
+  display:block;
+  animation:scanMove 1.2s ease;
+}
+
+.ticket-used{
+  animation:ticketUse 1s ease;
+}
+
+#nextDate{
+  margin-top:12px;
+  color:#c084fc;
+  font-size:14px;
+}
+
+#countdown{
+  margin-top:6px;
+  color:#f0abfc;
+  font-size:13px;
+}
+
+#message{
+  margin-top:18px;
+  font-size:16px;
+  color:#ffb4ff;
+  opacity:0;
+  transition:0.5s;
+}
+
+.show-message{
+  opacity:1 !important;
+}
+
+.hidden{
+  display:none;
+}
+
+#startScreen{
+  position:fixed;
+  inset:0;
+  background:radial-gradient(circle, #2d0036, #120016);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:999;
+}
+
+.open-card{
+  padding:28px 42px;
+  border-radius:24px;
+  border:2px solid #ff4bff;
+  color:white;
+  font-size:24px;
+  font-weight:bold;
+  letter-spacing:4px;
+  box-shadow:0 0 30px #ff4bff;
+  animation:pulseOpen 1.5s infinite;
+}
+
+.particle{
+  position:fixed;
+  width:6px;
+  height:6px;
+  border-radius:999px;
+  background:#ff4bff;
+  pointer-events:none;
+  animation:floatParticle linear infinite;
+}
+
+@keyframes floatTicket{
+  0%{ transform:translateY(0); filter:drop-shadow(0 0 10px #d946ef); }
+  50%{ transform:translateY(-10px); filter:drop-shadow(0 0 25px #d946ef); }
+  100%{ transform:translateY(0); filter:drop-shadow(0 0 10px #d946ef); }
+}
+
+@keyframes ticketUse{
+  0%{ transform:scale(1) rotateY(0deg); }
+  30%{ transform:scale(0.95) rotateY(0deg); }
+  60%{ transform:scale(1.05) rotateY(90deg); }
+  100%{ transform:scale(1) rotateY(0deg); }
+}
+
+@keyframes stampPop{
+  0%{ transform:translate(-50%, -50%) rotate(-18deg) scale(2); opacity:0; }
+  100%{ transform:translate(-50%, -50%) rotate(-18deg) scale(1); opacity:0.9; }
+}
+
+@keyframes scanMove{
+  0%{ top:25%; }
+  100%{ top:72%; }
+}
+
+@keyframes pulseOpen{
+  0%{ transform:scale(1); }
+  50%{ transform:scale(1.08); }
+  100%{ transform:scale(1); }
+}
+
+@keyframes floatParticle{
+  0%{ transform:translateY(100vh); opacity:0; }
+  20%{ opacity:1; }
+  100%{ transform:translateY(-120vh); opacity:0; }
+}
+
+@keyframes fadePremium{
+  0%{ opacity:0; transform:scale(1.4); }
+  20%{ opacity:1; transform:scale(1); }
+  80%{ opacity:1; }
+  100%{ opacity:0; transform:scale(0.9); }
+}
+</style>
+</head>
+
+<body>
+
+<div id="startScreen">
+  <div class="open-card">TAP TO OPEN</div>
+</div>
+
+<div class="wrap hidden" id="app">
+
+  <div class="stamp">REQUEST RECEIVED ♡</div>
+  <div class="scan-line"></div>
+
+  <audio id="scanSound" src="scan.mp3"></audio>
+
+  <img src="ticket-active.png" class="ticket" id="ticketImage">
+
+  <div id="seasonTitle"></div>
+  
+  <div class="status" id="status">ACTIVE</div>
+
+  <textarea id="requestText" rows="3" placeholder="お願い内容を書いてね"></textarea>
+
+  <div id="nextDate"></div>
+  <div id="countdown"></div>
+  <div id="inventory">
+    📦 所持品<br>
+    👽 宇宙ポイント: <span id="spaceCount">0</span><br>
+    🌱 雑草: <span id="grassCount">0</span><br>
+    🪨 石ころ: <span id="stoneCount">0</span></div>
+
+
+  <div id="message"></div>
+
+  
+
+  <button type="button" id="btn" onclick="useTicket()">使用する</button>
+  <button type="button" onclick="showGift()">🎁 OPEN GIFT</button>
+  <button type="button" onclick="grassGacha()">🎰 GRASS GACHA</button>
+  <button type="button" onclick="openShop()">🛒 換金所</button>
+  <button type="button" onclick="showCollection()">
+    📖 図鑑・コレクション
+    </button>
+    
+    <button type="button" onclick="openMiniGame()">
+    🎮 ミニゲーム
+    </button>
+  <button type="button" onclick="showAchievements()">  🏆 実績</button>
+</div>
+
+<script>
+const now = new Date();
+const month = now.getMonth() + 1;
+
+const themes = {
+1:"linear-gradient(135deg,#1a1b3a,#0f1021)",
+2:"linear-gradient(135deg,#2a1028,#140814)",
+3:"linear-gradient(135deg,#ffb6c1,#ff69b4)",
+4:"linear-gradient(135deg,#202020,#0f0f0f)",
+5:"linear-gradient(135deg,#24103a,#12081f)",
+6:"linear-gradient(135deg,#0f172a,#020617)",
+7:"linear-gradient(135deg,#2a0f1c,#14070d)",
+8:"linear-gradient(135deg,#33220f,#140c05)",
+9:"linear-gradient(135deg,#102b2b,#061212)",
+10:"linear-gradient(135deg,#2d1b12,#120905)",
+11:"linear-gradient(135deg,#1e1b4b,#0b0a1a)",
+12:"linear-gradient(135deg,#2a2a2a,#111111)"
+};
+
+document.body.style.background = themes[month];
+//document.getElementById("seasonTitle").textContent =
+//monthMessages[month];
+
+const thisMonth = now.getFullYear() + "-" + (now.getMonth()+1);
+const usedMonth = localStorage.getItem("usedMonth");
+
+const app = document.getElementById("app");
+const statusText = document.getElementById("status");
+const btn = document.getElementById("btn");
+const ticket = document.getElementById("ticketImage");
+const sound = document.getElementById("scanSound");
+const requestText = document.getElementById("requestText");
+const nextDate = document.getElementById("nextDate");
+const countdown = document.getElementById("countdown");
+const message = document.getElementById("message");
+
+let spacePoints =
+Number(localStorage.getItem("spacePoints")) || 0;
+
+let grassCount =
+Number(localStorage.getItem("grassCount")) || 0;
+
+let stoneCount =
+Number(localStorage.getItem("stoneCount")) || 0;
+
+let cloverCount =
+Number(localStorage.getItem("cloverCount")) || 0;
+
+let legendGrassCount =
+Number(localStorage.getItem("legendGrassCount")) || 0;
+
+let jewelCount =
+Number(localStorage.getItem("jewelCount")) || 0;
+
+let gachaCount =
+Number(localStorage.getItem("gachaCount")) || 0;
+
+let mineDeathCount =
+Number(localStorage.getItem("mineDeathCount")) || 0;
+
+let loginStreak =
+Number(localStorage.getItem("loginStreak")) || 0;
+
+const monthMessages = {
+  1:"🎍 Happy New Year!",
+  2:"🍫 Valentine Month",
+  3:"🎂 Happy Birthday!",
+  4:"🌸 Sakura Season",
+  5:"🩵 Nemophila Season",
+  6:"☔ Rainy Season",
+  7:"🎋 Tanabata",
+  8:"🎆 Summer Festival",
+  9:"🌕 Moon Night",
+  10:"🎃 Halloween",
+  11:"🍁 Autumn",
+  12:"🎄 Merry Christmas"
+};
+const seasonTitle = document.getElementById("seasonTitle");
+
+if(seasonTitle){
+  seasonTitle.textContent = monthMessages[month];
+}
+
+const ticketThemes = {
+  1:"hue-rotate(190deg)",
+  2:"hue-rotate(320deg)",
+  3:"hue-rotate(80deg)",
+  4:"brightness(1.2)",
+  5:"hue-rotate(260deg)",
+  6:"hue-rotate(160deg)",
+  7:"hue-rotate(340deg)",
+  8:"hue-rotate(20deg)",
+  9:"hue-rotate(120deg)",
+  10:"hue-rotate(40deg)",
+  11:"hue-rotate(220deg)",
+  12:"saturate(0)"
+};
+
+ticket.style.filter = ticketThemes[month];
+
+if(usedMonth === thisMonth){
+  setUsed(false);
+}else{
+  setActive();
+}
+
+async function useTicket(){
+
+  const request = requestText.value.trim();
+
+  if(request === ""){
+    alert("お願い内容を書いてね！");
+    return;
+  }
+
+  const ok = confirm(
+    "このお願い内容で\n今月分を使用しますか？\n\n" + request
+  );
+
+  if(!ok){
+    return;
+  }
+
+  const formData = new FormData();
+
+  formData.append("form-name", "request-pass");
+  formData.append("request", request);
+  formData.append("date", new Date().toLocaleString());
+
+  await fetch("https://formspree.io/f/mzdwkndw", {
+    method:"POST",
+    body:formData,
+    headers:{
+      "Accept":"application/json"
+    }
+  });
+
+  sound.play();
+
+  if(navigator.vibrate){
+    navigator.vibrate([120, 50, 120]);
+  }
+
+  app.classList.add("scanning");
+
+  setTimeout(() => {
+
+    localStorage.setItem("usedMonth", thisMonth);
+    localStorage.setItem("requestText", request);
+
+    app.classList.remove("scanning");
+
+    setUsed(true);
+
+  }, 1200);
+}
+
+function setUsed(withAnimation){
+
+  app.classList.add("used");
+
+  requestText.value = localStorage.getItem("requestText") || "";
+  requestText.disabled = true;
+
+  if(withAnimation){
+
+    ticket.classList.remove("ticket-used");
+    void ticket.offsetWidth;
+    ticket.classList.add("ticket-used");
+
+    setTimeout(() => {
+      ticket.src = "ticket-used.png";
+    }, 400);
+
+  }else{
+    ticket.src = "ticket-used.png";
+  }
+
+  statusText.textContent = "USED";
+  btn.textContent = "今月は使用済み";
+  btn.disabled = true;
+
+  const messages = [
+    "REQUEST RECEIVED ♡",
+    "Processing your wish...",
+    "Mission accepted.",
+    "I'll make your wish come true ♡",
+    "REQUEST VERIFIED",
+    "Your request has been logged ♡"
+  ];
+
+  message.textContent =
+    messages[Math.floor(Math.random() * messages.length)];
+
+  message.classList.add("show-message");
+  let jokeTriggered = false;
+  const jokeChance = Math.random();
+
+if(jokeChance < 0.2){
+  jokeTriggered = true;
+  showJokePass("🐈 NYAN PASS 🐈", "にゃーん。\n特に何も起きません");
+  setTimeout(()=>{ alert("本日の運勢：中吉🐾"); },3000);
+}
+else if(jokeChance < 0.4){
+  jokeTriggered = true;
+  showJokePass("🦖 DINOSAUR PASS 🦖", "ガオーー！！");
+  shakeScreen();
+}
+else if(jokeChance < 0.55){
+  jokeTriggered = true;
+  showJokePass("👽 ALIEN PASS 👽", "あなたは選ばれました。");
+  setTimeout(()=>{ alert("銀河連邦に報告します..."); },3000);
+  setTimeout(()=>{ alert("選ばれただけです。"); },5000);
+}
+else if(jokeChance < 0.65){
+  jokeTriggered = true;
+  showJokePass("🚨 ハズレ券 🚨", "残念！");
+  setTimeout(()=>{ alert("嘘です♡"); },3000);
+}
+else if(jokeChance < 0.67){
+  jokeTriggered = true;
+  showJokePass("🌈 LEGEND TICKET 🌈", "伝説のチケットです。\n特に得はありません。");
+}
+else if(jokeChance < 0.70){
+
+jokeTriggered = true;
+
+showJokePass(
+  "💀 完全ハズレ券 💀",
+  "今回はお願いを受け付けません"
+);
+
+btn.disabled = true;
+requestText.disabled = true;
+
+setTimeout(()=>{
+  alert("運が悪かったですね。担当者は内容を確認していません");
+},5000);
+
+}
+  const premiumChance = Math.random();
+
+  	if(
+  	!jokeTriggered &&
+  	premiumChance < 0.2 &&
+  	localStorage.getItem("premiumUsedMonth") !== thisMonth
+	){
+  	localStorage.setItem("premiumUsedMonth", thisMonth);
+
+    ticket.style.filter = "drop-shadow(0 0 40px gold)";
+
+    const premium = document.createElement("div");
+
+    premium.innerHTML =
+	month === 3
+	? "🎂 BIRTHDAY Keiji 🎂<br>UNLOCKED"
+	: "SPECIAL PASS<br>UNLOCKED";
+    premium.style.position = "fixed";
+    premium.style.inset = "0";
+    premium.style.display = "flex";
+    premium.style.justifyContent = "center";
+    premium.style.alignItems = "center";
+    premium.style.flexDirection = "column";
+    premium.style.fontSize = "42px";
+    premium.style.fontWeight = "bold";
+    premium.style.color = "#ffd700";
+    premium.style.textAlign = "center";
+    premium.style.background = "rgba(0,0,0,0.7)";
+    premium.style.zIndex = "9999";
+    premium.style.textShadow = "0 0 30px gold";
+    premium.style.animation = "fadePremium 2s ease";
+
+    document.body.appendChild(premium);
+
+    setTimeout(() => {
+
+premium.remove();
+
+localStorage.removeItem(
+  "usedMonth"
+);
+
+localStorage.removeItem(
+  "requestText"
+);
+
+ticket.src =
+  "ticket-active.png";
+
+ticket.style.filter =
+  ticketThemes[month]
+  + " drop-shadow(0 0 40px gold)";
+
+requestText.disabled =
+  false;
+
+requestText.value = "";
+
+statusText.textContent =
+  "PREMIUM ACTIVE";
+
+btn.textContent =
+  "プレミアムでもう1回使用";
+
+btn.disabled = false;
+
+message.textContent =
+"SPECIAL PASS UNLOCKED!\nもう1回お願いできます♡";
+
+message.classList.add(
+  "show-message"
+);
+
+}, 2000);
+  }
+
+  updateNextDate();
+}
+
+function setActive(){
+
+  app.classList.remove("used");
+  
+  if(month === 3){
+  for(let i=0;i<40;i++){
+
+  const confetti =
+  document.createElement("div");
+
+  confetti.innerHTML = ["🎉","🎂","🎈","✨"]
+  [Math.floor(Math.random()*4)];
+
+  confetti.style.position = "fixed";
+  confetti.style.left =
+    Math.random()*100 + "vw";
+
+  confetti.style.top = "-20px";
+
+  confetti.style.fontSize =
+    (20 + Math.random()*20) + "px";
+
+  confetti.style.zIndex = "9999";
+
+  confetti.style.transition = "4s linear";
+
+  document.body.appendChild(confetti);
+
+  setTimeout(() => {
+    confetti.style.top = "110vh";
+  },10);
+
+  setTimeout(() => {
+    confetti.remove();
+  },4000);
+	}
+  message.textContent =
+  "🎂 Birthday Month!\nお誕生日につき今月は2回お願いできます♡";
+	}
+	message.classList.add("show-message");
+  ticket.src = "ticket-active.png";
+  ticket.style.filter = ticketThemes[month];
+
+  requestText.disabled = false;
+  requestText.value = "";
+
+  statusText.textContent = "ACTIVE";
+  btn.textContent = "使用する";
+  btn.disabled = false;
+
+  if(month !== 3){
+  message.classList.remove("show-message");
+  message.textContent = "";
+	}
+if(month === 10){
+  setTimeout(()=>{
+    showJokePass("🎃 TRICK OR TREAT 🎃", "ハロウィン限定演出！");
+  },800);
+}
+
+if(month === 12){
+  setTimeout(()=>{
+    showJokePass("🎄 Merry Christmas 🎄", "クリスマス限定チケット！");
+  },800);
+}
+  updateNextDate();
+}
+
+function updateNextDate(){
+
+  const now = new Date();
+
+  const next = new Date(
+    now.getFullYear(),
+    now.getMonth()+1,
+    1
+  );
+
+  nextDate.textContent =
+    "NEXT AVAILABLE : " + next.toLocaleDateString();
+
+  const diff = next - now;
+
+  const days = Math.ceil(
+    diff / (1000*60*60*24)
+  );
+
+  countdown.textContent =
+    "あと " + days + " 日で復活";
+}
+function showCollection(){
+
+alert(
+  "📖 図鑑\n\n" +
+
+  (cloverCount > 0
+    ? "🍀 四つ葉のクローバー ×" + cloverCount
+    : "？？？") +
+
+  "\n" +
+
+  (legendGrassCount > 0
+    ? "👑 伝説の雑草 ×" + legendGrassCount
+    : "？？？") +
+
+  "\n" +
+
+  (jewelCount > 0
+    ? "💎 きれいな石 ×" + jewelCount
+    : "？？？")
+);
+
+}
+
+function openMiniGame(){
+
+const choice = prompt(
+  "🎮 ミニゲーム\n\n" +
+  "1：💣 爆弾ゲーム（🪨1個消費）\n" +
+  "2：🎲 サイコロゲーム（👽3pt消費）\n\n" +
+  "番号を入力してね"
+);
+
+if(choice === "1"){
+  mineGame();
+}
+else if(choice === "2"){
+  diceGame();
+}
+else{
+  alert("キャンセルしました");
+}
+
+}
+function mineGame(){
+
+if(stoneCount < 1){
+  alert("🪨 石ころが足りません！");
+  return;
+}
+
+stoneCount--;
+localStorage.setItem("stoneCount", stoneCount);
+updateInventory();
+
+const pick = prompt(
+  "💣 MINE GAME\n\n1〜5を選んでね"
+);
+
+const mine =
+  Math.floor(Math.random()*5)+1;
+
+if(Number(pick) === mine){
+  mineDeathCount++;
+
+  unlockAchievement(
+  "ach_mine",
+  "爆弾を踏んだ！"
+);
+
+  localStorage.setItem(
+  "mineDeathCount",
+  mineDeathCount
+  );
+  showJokePass(
+    "💀 完全ハズレ券 💀",
+    "お願いは破棄されました"
+  );
+
+}else{
+
+  grassCount++;
+  localStorage.setItem("grassCount", grassCount);
+  updateInventory();
+
+  alert("🎉 SAFE!\n\n🌱 雑草 +1");
+
+}
+
+}
+
+function diceGame(){
+
+if(spacePoints < 3){
+  alert("👽 宇宙ポイントが足りません！");
+  return;
+}
+
+spacePoints -= 3;
+
+const dice =
+  Math.floor(Math.random()*6)+1;
+
+if(dice === 6){
+
+  cloverCount++;
+  alert("🎲 6！大当たり！\n\n🍀 四つ葉のクローバー GET!");
+
+}else if(dice >= 4){
+
+  stoneCount++;
+  alert("🎲 " + dice + "！\n\n🪨 石ころ +1");
+
+}else{
+
+  grassCount++;
+  alert("🎲 " + dice + "！\n\n🌱 雑草 +1");
+
+}
+
+localStorage.setItem("spacePoints", spacePoints);
+localStorage.setItem("grassCount", grassCount);
+localStorage.setItem("stoneCount", stoneCount);
+localStorage.setItem("cloverCount", cloverCount);
+
+updateInventory();
+
+}
+
+function shakeScreen(){
+
+document.body.style.transform =
+  "translateX(30px)";
+
+setTimeout(()=>{
+  document.body.style.transform =
+    "translateX(-30px)";
+},80);
+
+setTimeout(()=>{
+  document.body.style.transform =
+    "translateX(20px)";
+},160);
+
+setTimeout(()=>{
+  document.body.style.transform =
+    "translateX(-20px)";
+},240);
+
+setTimeout(()=>{
+  document.body.style.transform =
+    "translateX(0)";
+},320);
+
+}
+
+function updateInventory(){
+
+document.getElementById("spaceCount")
+  .textContent = spacePoints;
+
+document.getElementById("grassCount")
+  .textContent = grassCount;
+
+document.getElementById("stoneCount")
+  .textContent = stoneCount;
+
+}
+
+function unlockAchievement(key, title){
+
+if(localStorage.getItem(key) === "true"){
+  return;
+}
+
+localStorage.setItem(key, "true");
+
+showJokePass(
+  "🏆 ACHIEVEMENT UNLOCKED 🏆",
+  title
+);
+
+}
+function showAchievements(){
+
+let text =
+  "🏆 実績\n\n";
+
+text += "🔓 初ログイン\n";
+
+text += loginStreak >= 3
+  ? "🔓 3日連続ログイン\n"
+  : "🔒 3日連続ログイン\n";
+
+text += gachaCount >= 10
+  ? "🔓 ガチャ10回\n"
+  : "🔒 ガチャ10回\n";
+
+text += legendGrassCount >= 1
+  ? "🔓 伝説の雑草GET\n"
+  : "🔒 伝説の雑草GET\n";
+
+text += mineDeathCount >= 1
+  ? "🔓 爆弾を踏んだ\n"
+  : "🔒 爆弾を踏んだ\n";
+
+text += localStorage.getItem("ach_mine") === "true"
+  ? "🔓 爆発マスター\n"
+  : "🔒 ？？？\n";
+
+text += localStorage.getItem("ach_legend_grass") === "true"
+  ? "🔓 伝説の草使い\n"
+  : "🔒 ？？？\n";
+
+alert(text);
+
+}
+function showMonthlyBonus(){
+
+  const thisMonth =
+new Date().getFullYear() +
+"-" +
+(new Date().getMonth()+1);
+
+const monthBonus =
+localStorage.getItem("monthBonus");
+
+  const today =
+new Date().toLocaleDateString();
+
+const bonusDate =
+localStorage.getItem("bonusDate");
+
+if(bonusDate === today){
+  return;
+}
+if(monthBonus !== thisMonth){
+
+spacePoints += 10;
+grassCount += 10;
+stoneCount += 10;
+
+localStorage.setItem(
+  "monthBonus",
+  thisMonth
+);
+
+localStorage.setItem(
+  "spacePoints",
+  spacePoints
+);
+
+localStorage.setItem(
+  "grassCount",
+  grassCount
+);
+
+localStorage.setItem(
+  "stoneCount",
+  stoneCount
+);
+
+updateInventory();
+
+alert(
+  "🎉 MONTH START BONUS 🎉\n\n" +
+  "👽 +10\n" +
+  "🌱 +10\n" +
+  "🪨 +10"
+);
+
+}
+const chance = Math.random();
+
+if(chance < 0.4){
+
+  spacePoints += 5;
+  localStorage.setItem("spacePoints", spacePoints);
+
+  alert("🎁 MONTHLY LOGIN BONUS\n\n👽 宇宙ポイント +5");
+
+}else if(chance < 0.7){
+
+  grassCount += 1;
+  localStorage.setItem("grassCount", grassCount);
+
+  alert("🎁 MONTHLY LOGIN BONUS\n\n🌱 雑草 +1");
+
+}else if(chance < 0.9){
+
+  stoneCount += 1;
+  localStorage.setItem("stoneCount", stoneCount);
+
+  alert("🎁 MONTHLY LOGIN BONUS\n\n🪨 石ころ +1");
+
+}else{
+
+  alert("🎁 MONTHLY LOGIN BONUS\n\n❓ 特に何もありません");
+
+}
+
+localStorage.setItem(
+  "bonusDate",
+  today
+);
+
+const lastLoginDate =
+  localStorage.getItem("lastLoginDate");
+
+loginStreak =
+Number(localStorage.getItem("loginStreak")) || 0;
+
+const yesterday =
+  new Date();
+
+yesterday.setDate(yesterday.getDate() - 1);
+
+const yesterdayText =
+  yesterday.toLocaleDateString();
+
+if(lastLoginDate === yesterdayText){
+  loginStreak++;
+}else{
+  loginStreak = 1;
+}
+
+localStorage.setItem("lastLoginDate", today);
+localStorage.setItem("loginStreak", loginStreak);
+
+alert(
+  "🔥 連続ログイン\n\n" +
+  loginStreak + "日目"
+);
+
+if(loginStreak === 3){
+  grassCount += 3;
+  localStorage.setItem("grassCount", grassCount);
+  alert("🎉 3日連続ボーナス\n\n🌱 雑草 +3");
+}
+
+if(loginStreak === 7){
+  stoneCount += 3;
+  localStorage.setItem("stoneCount", stoneCount);
+  alert("🎉 7日連続ボーナス\n\n🪨 石ころ +3");
+}
+
+if(loginStreak === 30){
+  legendGrassCount += 1;
+  localStorage.setItem("legendGrassCount", legendGrassCount);
+  alert("👑 30日連続ボーナス\n\n伝説の雑草 GET!!");
+}
+
+updateInventory();
+
+}
+
+function showFortune(){
+
+const fortunes = [
+  "🌟 大吉",
+  "😊 中吉",
+  "🙂 小吉",
+  "😐 末吉",
+  "😱 凶",
+  "👽 宇宙人"
+];
+
+alert(
+  "🔮 本日の運勢\n\n" +
+  fortunes[
+    Math.floor(
+      Math.random()*fortunes.length
+    )
+  ]
+);
+
+}
+
+function showGift(){
+
+const gifts = [
+
+  {
+    title:"💌 THANK YOU 💌",
+    text:"いつもありがとう♡"
+  },
+
+  {
+    title:"🎲 LUCK UP 🎲",
+    text:"次回ネタPASS確率UP！"
+  },
+
+  {
+    title:"🐈 NYAN BOOST 🐈",
+    text:"次回にゃんPASSが出やすくなるかも♡"
+  },
+
+  {
+    title:"✨ BONUS DAY ✨",
+    text:"今日はラッキー！"
+  },
+
+  {
+    title:"📝 REQUEST PLUS 📝",
+    text:"今日だけお願いごと文字数2倍！"
+  }
+
+];
+
+const gift =
+  gifts[Math.floor(Math.random()*gifts.length)];
+
+alert(
+  gift.title +
+  "\n\n" +
+  gift.text
+);
+
+}
+
+function grassGacha(){
+
+if(grassCount < 3){
+  alert("🌱 雑草が足りません！");
+  return;
+}
+
+grassCount -= 3;
+
+gachaCount++;
+localStorage.setItem("gachaCount", gachaCount);
+
+const effect = document.createElement("div");
+
+effect.innerHTML = "🎰";
+effect.style.position = "fixed";
+effect.style.inset = "0";
+effect.style.display = "flex";
+effect.style.justifyContent = "center";
+effect.style.alignItems = "center";
+effect.style.fontSize = "60px";
+effect.style.fontWeight = "bold";
+effect.style.background = "rgba(0,0,0,0.9)";
+effect.style.zIndex = "9999";
+
+document.body.appendChild(effect);
+
+const texts = ["🌱","🪨","👽","🍀","👑"];
+let i = 0;
+
+const rolling = setInterval(()=>{
+  effect.innerHTML = texts[i % texts.length];
+  i++;
+},100);
+
+setTimeout(()=>{
+
+  clearInterval(rolling);
+  effect.remove();
+
+  const r = Math.random();
+
+  if(r < 0.60){
+    grassCount++;
+    alert("🎰 GRASS GACHA\n\n🌱 雑草 +1");
+  }
+  else if(r < 0.85){
+    stoneCount++;
+    alert("🎰 GRASS GACHA\n\n🪨 石ころ +1");
+  }
+  else if(r < 0.95){
+    spacePoints += 3;
+    alert("🎰 GRASS GACHA\n\n👽 宇宙ポイント +3");
+  }
+  else if(r < 0.99){
+    cloverCount++;
+    alert("🎰 GRASS GACHA\n\n🍀 四つ葉のクローバー GET!");
+  }
+  else{
+    legendGrassCount++;
+    unlockAchievement("ach_legend_grass","伝説の雑草GET！");
+    showJokePass("🌈 LEGEND ITEM 🌈","👑 伝説の雑草 GET!!");
+  }
+
+  localStorage.setItem("spacePoints", spacePoints);
+  localStorage.setItem("grassCount", grassCount);
+  localStorage.setItem("stoneCount", stoneCount);
+  localStorage.setItem("cloverCount", cloverCount);
+  localStorage.setItem("legendGrassCount", legendGrassCount);
+
+  updateInventory();
+
+},1500);
+}
+
+function openShop(){
+
+const menu =
+  "🛒 換金所\n\n" +
+  "1：🌱3個 → 🍀四つ葉のクローバー\n" +
+  "2：🪨2個 → 💎きれいな石\n" +
+  "3：👽15pt → 👽宇宙人候補\n\n" +
+  "交換したい番号を入力してね";
+
+const choice = prompt(menu);
+
+if(choice === "1"){
+
+  if(grassCount < 3){
+    alert("🌱 雑草が足りません！");
+    return;
+  }
+
+  grassCount -= 3;
+  cloverCount++;
+
+  alert("🍀 四つ葉のクローバー GET!");
+
+}else if(choice === "2"){
+
+  if(stoneCount < 2){
+    alert("🪨 石ころが足りません！");
+    return;
+  }
+
+  stoneCount -= 2;
+  jewelCount++;
+
+  alert("💎 きれいな石 GET!");
+
+}else if(choice === "3"){
+
+  if(spacePoints < 15){
+    alert("👽 宇宙ポイントが足りません！");
+    return;
+  }
+
+  spacePoints -= 15;
+
+  alert("👽 宇宙人候補に認定されました");
+
+}else{
+  alert("交換をキャンセルしました");
+  return;
+}
+
+localStorage.setItem("spacePoints", spacePoints);
+localStorage.setItem("grassCount", grassCount);
+localStorage.setItem("stoneCount", stoneCount);
+localStorage.setItem("cloverCount", cloverCount);
+localStorage.setItem("jewelCount", jewelCount);
+
+updateInventory();
+}
+
+
+function showJokePass(title,text){
+
+  const joke = document.createElement("div");
+
+  joke.innerHTML =
+    title + "<br><br>" + text;
+
+  joke.style.position = "fixed";
+  joke.style.inset = "0";
+  joke.style.display = "flex";
+  joke.style.justifyContent = "center";
+  joke.style.alignItems = "center";
+  joke.style.flexDirection = "column";
+  joke.style.fontSize = "38px";
+  joke.style.fontWeight = "bold";
+  joke.style.color = "white";
+  joke.style.background =
+    "rgba(0,0,0,0.85)";
+  joke.style.zIndex = "9999";
+  joke.style.textAlign = "center";
+
+  document.body.appendChild(joke);
+
+  setTimeout(()=>{
+    joke.remove();
+  },3000);
+}
+const startScreen = document.getElementById("startScreen");
+updateInventory();
+
+let opened = false;
+
+startScreen.onclick = () => {
+
+  if(opened){
+    return;
+  }
+
+  opened = true;
+
+  startScreen.remove();
+  app.classList.remove("hidden");
+
+  setTimeout(() => {
+    showMonthlyBonus();
+    showFortune();
+  }, 300);
+
+};
+
+
+
+for(let i=0; i<35; i++){
+
+  const p = document.createElement("div");
+
+  p.classList.add("particle");
+  p.style.left = Math.random()*100 + "vw";
+  p.style.animationDuration = 4 + Math.random()*6 + "s";
+  p.style.animationDelay = Math.random()*5 + "s";
+
+  document.body.appendChild(p);
+}
+</script>
+
+</body>
+</html>
