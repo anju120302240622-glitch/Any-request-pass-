@@ -9,9 +9,7 @@
 body{
   margin:0;
   min-height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
+  overflow-x:hidden;
   font-family:sans-serif;
   color:white;
   transition:1s;
@@ -21,6 +19,8 @@ body{
   width:90%;
   max-width:390px;
   text-align:center;
+  margin:0 auto;
+  padding:24px 0;
 }
 
 .ticket{
@@ -113,20 +113,24 @@ button{
 
 .scan-line{
   display:none;
-  position:fixed;
-  top:25%;
-  left:50%;
-  width:260px;
-  height:3px;
+  position:absolute;
+  left:0;
+  top:0;
+  width:100%;
+  height:4px;
   background:#ff4bff;
   box-shadow:0 0 18px #ff4bff;
-  transform:translateX(-50%);
   z-index:20;
 }
 
 .scanning .scan-line{
   display:block;
-  animation:scanMove 1.2s ease;
+  animation:scanTicket 1.2s ease;
+}
+
+@keyframes scanTicket{
+  0%{ top:12%; }
+  100%{ top:82%; }
 }
 
 .ticket-used{
@@ -153,6 +157,173 @@ button{
   transition:0.5s;
 }
 
+#eventBanner{
+  margin:14px auto;
+  padding:14px 16px;
+  border-radius:18px;
+  width:90%;
+  max-width:360px;
+  color:#fff;
+  font-size:15px;
+  line-height:1.5;
+  display:none;
+  box-shadow:0 0 20px rgba(255,255,255,0.08);
+  text-align:left;
+}
+
+#eventBanner.show{
+  display:block;
+  animation:stampPop 0.5s ease;
+}
+
+#eventBanner.event-star{
+  background:linear-gradient(135deg,#1d4ed8,#60a5fa);
+  box-shadow:0 0 25px rgba(96,165,250,.35);
+}
+
+#eventBanner.event-grass{
+  background:linear-gradient(135deg,#15803d,#4ade80);
+  box-shadow:0 0 25px rgba(74,222,128,.35);
+}
+
+#eventBanner.event-stone{
+  background:linear-gradient(135deg,#475569,#94a3b8);
+  box-shadow:0 0 25px rgba(148,163,184,.35);
+}
+
+#eventBanner.event-gacha{
+  background:linear-gradient(135deg,#7c3aed,#d946ef);
+  box-shadow:0 0 25px rgba(217,70,239,.35);
+}
+
+#eventBanner.event-love{
+  background:linear-gradient(135deg,#db2777,#f472b6);
+  box-shadow:0 0 25px rgba(244,114,182,.35);
+}
+
+#eventBanner.event-alien{
+  background:linear-gradient(135deg,#0f766e,#22d3ee);
+  box-shadow:0 0 25px rgba(34,211,238,.35);
+}
+
+#eventBanner.event-jewel{
+  background:linear-gradient(135deg,#0f766e,#14b8a6);
+  box-shadow:0 0 25px rgba(20,184,166,.35);
+}
+
+#eventBanner.event-golden{
+  background:linear-gradient(135deg,#b45309,#facc15);
+  box-shadow:0 0 30px rgba(250,204,21,.45);
+  color:#2b1800;
+}
+
+.event-title-pop{
+  position:fixed;
+  inset:0;
+  z-index:10001;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  pointer-events:none;
+  color:white;
+  text-shadow:0 0 18px rgba(0,0,0,.45);
+  animation:eventTitlePop 2.6s ease forwards;
+}
+
+.event-title-pop .small{
+  font-size:20px;
+  letter-spacing:3px;
+  margin-bottom:10px;
+  opacity:.9;
+}
+
+.event-title-pop .big{
+  font-size:42px;
+  font-weight:900;
+  line-height:1.2;
+}
+.start-event-effect{
+  position:fixed;
+  inset:0;
+  z-index:9998;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 58px;
+  background: rgba(0,0,0,0.35);
+  pointer-events: none;
+  animation: startEventPop 1.2s ease forwards;
+}
+@keyframes startEventPop{
+  0%{
+    opacity:0;
+    transform:scale(0.6);
+  }
+  20%{
+    opacity:1;
+    transform:scale(1.15);
+  }
+  70%{
+    opacity:1;
+    transform:scale(1);
+  }
+  100%{
+    opacity:0;
+    transform:scale(1.4);
+  }
+}
+
+@keyframes eventTitlePop{
+  0%{
+    opacity:0;
+    transform:scale(.75);
+  }
+  20%{
+    opacity:1;
+    transform:scale(1.05);
+  }
+  70%{
+    opacity:1;
+    transform:scale(1);
+  }
+  100%{
+    opacity:0;
+    transform:scale(1.08);
+  }
+}
+.start-event-effect{
+  position:fixed;
+  inset:0;
+  z-index:9998;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:58px;
+  background:rgba(0,0,0,0.35);
+  pointer-events:none;
+  animation:startEventPop 1.2s ease forwards;
+}
+
+@keyframes startEventPop{
+  0%{
+    opacity:0;
+    transform:scale(0.6);
+  }
+  30%{
+    opacity:1;
+    transform:scale(1.15);
+  }
+  70%{
+    opacity:1;
+    transform:scale(1);
+  }
+  100%{
+    opacity:0;
+    transform:scale(1.4);
+  }
+}
 .show-message{
   opacity:1 !important;
 }
@@ -194,9 +365,9 @@ button{
 }
 
 @keyframes floatTicket{
-  0%{ transform:translateY(0); filter:drop-shadow(0 0 10px #d946ef); }
-  50%{ transform:translateY(-10px); filter:drop-shadow(0 0 25px #d946ef); }
-  100%{ transform:translateY(0); filter:drop-shadow(0 0 10px #d946ef); }
+  0%{ transform:translateY(0); }
+  50%{ transform:translateY(-10px);  }
+  100%{ transform:translateY(0); }
 }
 
 @keyframes ticketUse{
@@ -234,6 +405,519 @@ button{
   80%{ opacity:1; }
   100%{ opacity:0; transform:scale(0.9); }
 }
+
+.season-emoji{
+  position:fixed;
+  top:-40px;
+  pointer-events:none;
+  z-index:1;
+  animation:seasonFall linear forwards;
+}
+
+@keyframes seasonFall{
+  0%{
+    transform:translateY(-40px) rotate(0deg);
+    opacity:0;
+  }
+  15%{
+    opacity:1;
+  }
+  100%{
+    transform:translateY(110vh) rotate(360deg);
+    opacity:0;
+  }
+}
+
+.background-flash{
+  animation:bgFlash 1.2s ease;
+}
+
+@keyframes bgFlash{
+  0%{ filter:brightness(1); }
+  50%{ filter:brightness(1.35); }
+  100%{ filter:brightness(1); }
+}
+.whack-area{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin:18px auto;
+  max-width:320px;
+}
+
+.whack-cell{
+  aspect-ratio:1/1;
+  border:none;
+  border-radius:18px;
+  background:#2b0036;
+  font-size:34px;
+  box-shadow:0 0 14px rgba(217,70,239,.25);
+}
+
+.whack-cell.hit{
+  background:#14532d;
+  box-shadow:0 0 25px rgba(74,222,128,.5);
+}
+.mine-board{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin:18px auto;
+  max-width:320px;
+  width:90%;
+}
+
+.mine-cell{
+  aspect-ratio:1/1;
+  border:none;
+  border-radius:18px;
+  background:#581c87;
+  color:white;
+  font-size:34px;
+  box-shadow:0 0 14px rgba(217,70,239,.3);
+  transition:.2s;
+}
+
+.mine-cell:active{
+  transform:scale(.94);
+}
+
+.mine-cell.opened{
+  transform:scale(1.05);
+}
+
+.game-full{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  color:white;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:20px;
+  box-sizing:border-box;
+}
+
+.game-panel{
+  width:90%;
+  max-width:360px;
+}
+
+.heart-area{
+  position:relative;
+  width:90vw;
+  max-width:360px;
+  height:420px;
+  border-radius:24px;
+  background:rgba(255,255,255,0.08);
+  overflow:hidden;
+  box-shadow:0 0 24px rgba(244,114,182,.25);
+  margin:12px auto;
+}
+
+.falling-heart{
+  position:absolute;
+  font-size:34px;
+  animation:heartFall linear forwards;
+}
+
+@keyframes heartFall{
+  from{ top:-40px; }
+  to{ top:440px; }
+}
+
+.slot-box{
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  margin:20px 0;
+}
+
+.slot-reel{
+  width:80px;
+  height:80px;
+  border-radius:18px;
+  background:#2b0036;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:42px;
+  box-shadow:0 0 18px rgba(217,70,239,.35);
+}
+
+.memory-board{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+  width:260px;
+  margin:20px auto;
+}
+
+.memory-board.hard{
+  grid-template-columns:repeat(4,1fr);
+  width:340px;
+  max-width:92vw;
+}
+
+.memory-board.hard .memory-cell{
+  font-size:28px;
+  border-radius:18px;
+}
+
+.memory-cell{
+  aspect-ratio:1/1;
+  border:none;
+  border-radius:22px;
+  background:#312e81;
+  color:white;
+  font-size:34px;
+  box-shadow:0 0 18px rgba(129,140,248,.35);
+}
+
+.memory-cell.active{
+  background:#facc15;
+  box-shadow:0 0 28px #facc15;
+}
+.tab-menu{
+  position:sticky;
+  bottom:0;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:6px;
+  margin-top:18px;
+  padding:8px;
+  background:rgba(0,0,0,.25);
+  backdrop-filter:blur(8px);
+  border-radius:18px;
+  z-index:50;
+}
+
+.tab-menu button{
+  width:auto;
+  margin:0;
+  padding:10px 4px;
+  font-size:12px;
+  border-radius:14px;
+  background:rgba(217,70,239,.75);
+}
+.tab-content{
+  display:none;
+  padding-bottom:18px;
+}
+
+.tab-content.active{
+  display:block;
+}
+.tab-btn.active{
+  background:linear-gradient(135deg,#f0abfc,#d946ef);
+  box-shadow:0 0 18px rgba(217,70,239,.45);
+  transform:translateY(-2px);
+}
+
+.month-card{
+  width:90%;
+  max-width:360px;
+  margin:18px auto 20px;
+  padding:18px 18px 14px;
+  border-radius:24px;
+  background:linear-gradient(135deg,rgba(255,255,255,.12),rgba(255,255,255,.06));
+  backdrop-filter:blur(10px);
+  box-shadow:0 0 24px rgba(255,255,255,.08);
+  text-align:left;
+}
+
+.month-title{
+  font-size:22px;
+  font-weight:700;
+  margin-bottom:14px;
+  color:#fff;
+}
+
+.month-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:8px 0;
+  border-bottom:1px solid rgba(255,255,255,.12);
+  font-size:15px;
+}
+
+.month-row:last-child{
+  border-bottom:none;
+}
+
+.month-row span{
+  color:#d8b4fe;
+  font-weight:600;
+  letter-spacing:.04em;
+}
+
+.month-row strong{
+  color:#fff;
+  text-align:right;
+  max-width:60%;
+}
+.game-list{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+  width:90%;
+  max-width:360px;
+  margin:20px auto;
+}
+
+.game-list button{
+  width:100%;
+  margin:0;
+  min-height:92px;
+  border-radius:22px;
+  font-size:16px;
+  line-height:1.4;
+  background:linear-gradient(135deg,#d946ef,#7c3aed);
+  box-shadow:0 0 18px rgba(217,70,239,.28);
+}
+
+.game-list button span{
+  font-size:11px;
+  opacity:.85;
+}
+.shop-grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:14px;
+  width:90%;
+  max-width:360px;
+  margin:20px auto;
+}
+
+.shop-card{
+  width:100%;
+  margin:0;
+  padding:18px 16px;
+  border-radius:24px;
+  text-align:left;
+  background:linear-gradient(135deg,rgba(217,70,239,.95),rgba(124,58,237,.95));
+  box-shadow:0 0 22px rgba(217,70,239,.25);
+  min-height:120px;
+}
+
+.shop-icon{
+  font-size:28px;
+  margin-bottom:8px;
+}
+
+.shop-title{
+  font-size:22px;
+  font-weight:700;
+  color:#fff;
+  margin-bottom:8px;
+}
+
+.shop-desc{
+  font-size:14px;
+  line-height:1.6;
+  color:#f5d0fe;
+}
+
+.collection-list{
+  display:grid;
+  gap:10px;
+  margin:18px auto;
+}
+
+.collection-list div{
+  padding:12px;
+  border-radius:16px;
+  background:rgba(255,255,255,.1);
+  font-size:17px;
+  font-weight:bold;
+}
+
+.status-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+  width:90%;
+  max-width:360px;
+  margin:20px auto;
+}
+
+.status-card{
+  padding:16px 10px;
+  border-radius:22px;
+  background:linear-gradient(135deg,rgba(255,255,255,.12),rgba(255,255,255,.06));
+  box-shadow:0 0 20px rgba(255,255,255,.08);
+  text-align:center;
+}
+
+.status-icon{
+  font-size:28px;
+  margin-bottom:6px;
+}
+
+.status-label{
+  font-size:11px;
+  color:#d8b4fe;
+  letter-spacing:.08em;
+  margin-bottom:6px;
+}
+
+.status-value{
+  font-size:18px;
+  font-weight:800;
+  color:#fff;
+}
+
+.inventory-card{
+  width:90%;
+  max-width:360px;
+  margin:18px auto;
+  padding:16px;
+  border-radius:22px;
+  background:rgba(255,255,255,.08);
+  box-shadow:0 0 20px rgba(255,255,255,.08);
+  line-height:1.8;
+}
+
+.achieve-list{
+  display:grid;
+  gap:10px;
+  margin:18px auto;
+  max-height:420px;
+  overflow-y:auto;
+}
+
+.achieve-card{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  padding:12px;
+  border-radius:18px;
+  text-align:left;
+}
+
+.achieve-card.unlocked{
+  background:linear-gradient(135deg,rgba(250,204,21,.28),rgba(217,70,239,.22));
+  box-shadow:0 0 18px rgba(250,204,21,.18);
+}
+
+.achieve-card.locked{
+  background:rgba(255,255,255,.07);
+  opacity:.55;
+}
+
+.achieve-icon{
+  font-size:30px;
+  width:42px;
+  text-align:center;
+}
+
+.achieve-title{
+  font-size:16px;
+  font-weight:800;
+}
+
+.achieve-desc{
+  font-size:12px;
+  color:#e9d5ff;
+  margin-top:3px;
+}
+
+.home-menu{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+  width:90%;
+  max-width:360px;
+  margin:22px auto;
+}
+
+.home-menu button{
+  min-height:92px;
+  border-radius:24px;
+  font-size:18px;
+  line-height:1.4;
+}
+
+.ghost-btn{
+  width:90%;
+  max-width:360px;
+  margin:8px auto 16px;
+  background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.2);
+}
+
+.home-menu{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+  width:90%;
+  max-width:360px;
+  margin:22px auto;
+}
+
+.home-menu button{
+  min-height:92px;
+  border-radius:24px;
+  font-size:18px;
+  line-height:1.4;
+}
+
+.home-card{
+  width:90%;
+  max-width:380px;
+  margin:18px auto 24px;
+  padding:20px;
+  border-radius:28px;
+  background:linear-gradient(135deg,rgba(255,255,255,.14),rgba(255,255,255,.06));
+  box-shadow:0 0 26px rgba(217,70,239,.22);
+  text-align:left;
+}
+
+.home-title{
+  font-size:28px;
+  font-weight:900;
+  text-align:center;
+  margin-bottom:8px;
+  text-shadow:0 0 18px #d946ef;
+}
+
+.home-sub{
+  text-align:center;
+  color:#f0abfc;
+  font-size:14px;
+  margin-bottom:16px;
+}
+
+.home-status-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+
+.home-status-grid div{
+  padding:12px;
+  border-radius:18px;
+  background:rgba(0,0,0,.22);
+}
+
+.home-status-grid span{
+  display:block;
+  font-size:11px;
+  color:#d8b4fe;
+  margin-bottom:6px;
+}
+
+.home-status-grid strong{
+  font-size:18px;
+  color:white;
+}
+.ticket-wrap{
+  position:relative;
+  width:100%;
+}
 </style>
 </head>
 
@@ -246,62 +930,182 @@ button{
 <div class="wrap hidden" id="app">
 
   <div class="stamp">REQUEST RECEIVED ♡</div>
-  <div class="scan-line"></div>
 
   <audio id="scanSound" src="scan.mp3"></audio>
 
-  <img src="ticket-active.png" class="ticket" id="ticketImage">
+  <div class="ticket-wrap">
+    <img src="ticket-active.png" class="ticket" id="ticketImage">
+    <div class="scan-line"></div>
+  </div>
 
   <div id="seasonTitle"></div>
   
   <div class="status" id="status">ACTIVE</div>
-
-  <textarea id="requestText" rows="3" placeholder="お願い内容を書いてね"></textarea>
-
   <div id="nextDate"></div>
   <div id="countdown"></div>
-  <div id="inventory">
-    📦 所持品<br>
-    👽 宇宙ポイント: <span id="spaceCount">0</span><br>
-    🌱 雑草: <span id="grassCount">0</span><br>
-    🪨 石ころ: <span id="stoneCount">0</span></div>
-
-
   <div id="message"></div>
+  <div id="eventBanner"></div>
 
   
+  <div class="tab-content active" id="tab-home">
 
-  <button type="button" id="btn" onclick="useTicket()">使用する</button>
-  <button type="button" onclick="showGift()">🎁 OPEN GIFT</button>
-  <button type="button" onclick="grassGacha()">🎰 GRASS GACHA</button>
-  <button type="button" onclick="openShop()">🛒 換金所</button>
-  <button type="button" onclick="showCollection()">
-    📖 図鑑・コレクション
-    </button>
-    
-    <button type="button" onclick="openMiniGame()">
-    🎮 ミニゲーム
-    </button>
-  <button type="button" onclick="showAchievements()">  🏆 実績</button>
-</div>
+    <div class="home-card">
+      <div class="home-title">ANY REQUEST PASS</div>
+      <div class="home-sub" id="homeTodayText">今日も起動ありがとう♡</div>
+  
+      <div class="home-status-grid">
+        <div>
+          <span>PASS</span>
+          <strong id="homePassText">ACTIVE</strong>
+        </div>
+        <div>
+          <span>EVENT</span>
+          <strong id="homeEventText">なし</strong>
+        </div>
+        <div>
+          <span>👽 POINT</span>
+          <strong id="homePointText">0</strong>
+        </div>
+        <div>
+          <span>🌱 GRASS</span>
+          <strong id="homeGrassText">0</strong>
+        </div>
+      </div>
+    </div>
+  
+    <div class="home-menu">
+      <button type="button" onclick="showTab('tab-pass')">🎫<br>PASS</button>
+      <button type="button" onclick="showTab('tab-game')">🎮<br>GAME</button>
+      <button type="button" onclick="showTab('tab-shop')">🎰<br>SHOP</button>
+      <button type="button" onclick="showTab('tab-status')">📊<br>STATUS</button>
+    </div>
+  
+  </div>
+  <div class="tab-content " id="tab-pass">
+
+    <button type="button" class="ghost-btn" onclick="showTab('tab-home')">← HOME</button>
+
+    <div id="monthCard" class="month-card">
+      <div class="month-title">📅 今月の状況</div>
+  
+      <div class="month-row">
+        <span>STATUS</span>
+        <strong id="monthStatusText">ACTIVE</strong>
+      </div>
+  
+      <div class="month-row">
+        <span>NEXT</span>
+        <strong id="monthNextText">2026/7/1</strong>
+      </div>
+  
+      <div class="month-row">
+        <span>EVENT</span>
+        <strong id="monthEventText">なし</strong>
+      </div>
+  
+      <div class="month-row">
+        <span>EFFECT</span>
+        <strong id="monthEffectText">なし</strong>
+      </div>
+    </div>
+  
+    <textarea id="requestText" placeholder="お願い内容を書いてね"></textarea>
+  
+    <button type="button" id="btn" onclick="useTicket()">使用する</button>
+    <button type="button" onclick="showGift()">🎁 OPEN GIFT</button>
+  </div>
+
+  <div class="tab-content" id="tab-game">
+    <button type="button" class="ghost-btn" onclick="showTab('tab-home')">← HOME</button>
+    <div class="game-list">
+      <button type="button" onclick="mineGame()">💣 爆弾ゲーム<br><span>石ころ1個消費</span></button>
+      <button type="button" onclick="diceGame()">🎲 サイコロ<br><span>宇宙ポイント3消費</span></button>
+      <button type="button" onclick="whackGrassGame()">🌱 雑草もぐらたたき<br><span>無料</span></button>
+      <button type="button" onclick="heartCatchGame()">💖 ハートキャッチ<br><span>無料</span></button>
+      <button type="button" onclick="slotGame()">🎰 スロット<br><span>宇宙ポイント5消費</span></button>
+      <button type="button" onclick="memoryGame()">🧠 記憶ゲーム<br><span>無料</span></button>
+    </div>
+  
+  </div>
+  
+  <div class="tab-content" id="tab-shop">
+    <button type="button" class="ghost-btn" onclick="showTab('tab-home')">← HOME</button>
+    <div class="game-list">
+      <button type="button" onclick="openGachaRoom()">🎰 ガチャルーム<br><span>雑草・無料券で回す</span></button>
+      <button type="button" onclick="openExchangeRoom()">🛒 換金所<br><span>素材を交換する</span></button>
+      <button type="button" onclick="openCollectionRoom()">📖 図鑑ルーム<br><span>集めたものを見る</span></button>
+    </div>
+  
+  </div>
+  
+  </div>
+  <div class="tab-content" id="tab-status">
+    <button type="button" class="ghost-btn" onclick="showTab('tab-home')">← HOME</button>
+    <div class="status-grid">
+  
+      <div class="status-card">
+        <div class="status-icon">🎫</div>
+        <div class="status-label">PASS STATUS</div>
+        <div class="status-value" id="statusPassValue">ACTIVE</div>
+      </div>
+  
+      <div class="status-card">
+        <div class="status-icon">🔥</div>
+        <div class="status-label">LOGIN STREAK</div>
+        <div class="status-value" id="statusLoginValue">0日</div>
+      </div>
+  
+      <div class="status-card">
+        <div class="status-icon">🎰</div>
+        <div class="status-label">GACHA COUNT</div>
+        <div class="status-value" id="statusGachaValue">0回</div>
+      </div>
+  
+      <div class="status-card">
+        <div class="status-icon">💣</div>
+        <div class="status-label">BOMB DEATH</div>
+        <div class="status-value" id="statusMineValue">0回</div>
+      </div>
+  
+    </div>
+  
+    <div id="inventory" class="inventory-card">
+      📦 所持品<br>
+      👽 宇宙ポイント: <span id="spaceCount">0</span><br>
+      🌱 雑草: <span id="grassCount">0</span><br>
+      🪨 石ころ: <span id="stoneCount">0</span><br>
+      🎰 ガチャ無料券: <span id="freeGachaCount">0</span>
+    </div>
+  
+    <button type="button" onclick="showAchievements()">🏆 実績を見る</button>
+  
+  </div>
+  
+  <div class="tab-content" id="tab-game">
+    <button type="button" onclick="openMiniGame()">🎮 ミニゲーム</button>
+  </div>
+  
+  <div class="tab-content" id="tab-status">
+    <button type="button" onclick="showAchievements()">🏆 実績</button>
+  </div>
 
 <script>
 const now = new Date();
 const month = now.getMonth() + 1;
 
 const themes = {
-1:"linear-gradient(135deg,#1a1b3a,#0f1021)",
-2:"linear-gradient(135deg,#2a1028,#140814)",
-3:"linear-gradient(135deg,#ffb6c1,#ff69b4)",
-4:"linear-gradient(135deg,#202020,#0f0f0f)",
-5:"linear-gradient(135deg,#24103a,#12081f)",
-6:"linear-gradient(135deg,#0f172a,#020617)",
-7:"linear-gradient(135deg,#2a0f1c,#14070d)",
-8:"linear-gradient(135deg,#33220f,#140c05)",
-9:"linear-gradient(135deg,#102b2b,#061212)",
-10:"linear-gradient(135deg,#2d1b12,#120905)",
-11:"linear-gradient(135deg,#1e1b4b,#0b0a1a)",
-12:"linear-gradient(135deg,#2a2a2a,#111111)"
+  1:"linear-gradient(135deg,#0f172a,#1e3a8a,#020617)",
+  2:"linear-gradient(135deg,#3b0764,#be185d,#1f0028)",
+  3:"linear-gradient(135deg,#ff8fab,#ff4d8d,#7c2d12)",
+  4:"linear-gradient(135deg,#fecdd3,#86efac,#38bdf8)",
+  5:"linear-gradient(135deg,#0f766e,#22d3ee,#1e1b4b)",
+  6:"linear-gradient(135deg,#0f172a,#1d4ed8,#020617)",
+  7:"linear-gradient(135deg,#312e81,#7c3aed,#020617)",
+  8:"linear-gradient(135deg,#7f1d1d,#f97316,#111827)",
+  9:"linear-gradient(135deg,#111827,#334155,#facc15)",
+  10:"linear-gradient(135deg,#111827,#7c2d12,#ea580c)",
+  11:"linear-gradient(135deg,#3f1d0b,#92400e,#111827)",
+  12:"linear-gradient(135deg,#052e16,#991b1b,#020617)"
 };
 
 document.body.style.background = themes[month];
@@ -320,6 +1124,8 @@ const requestText = document.getElementById("requestText");
 const nextDate = document.getElementById("nextDate");
 const countdown = document.getElementById("countdown");
 const message = document.getElementById("message");
+const eventBanner = document.getElementById("eventBanner");
+
 
 let spacePoints =
 Number(localStorage.getItem("spacePoints")) || 0;
@@ -369,18 +1175,18 @@ if(seasonTitle){
 }
 
 const ticketThemes = {
-  1:"hue-rotate(190deg)",
-  2:"hue-rotate(320deg)",
-  3:"hue-rotate(80deg)",
-  4:"brightness(1.2)",
-  5:"hue-rotate(260deg)",
-  6:"hue-rotate(160deg)",
-  7:"hue-rotate(340deg)",
-  8:"hue-rotate(20deg)",
-  9:"hue-rotate(120deg)",
-  10:"hue-rotate(40deg)",
-  11:"hue-rotate(220deg)",
-  12:"saturate(0)"
+  1:"hue-rotate(190deg) drop-shadow(0 0 18px #60a5fa)",
+  2:"hue-rotate(320deg) drop-shadow(0 0 18px #f472b6)",
+  3:"hue-rotate(80deg) drop-shadow(0 0 18px #fb7185)",
+  4:"brightness(1.15) saturate(1.1) drop-shadow(0 0 18px #4ade80)",
+  5:"hue-rotate(260deg) drop-shadow(0 0 18px #22d3ee)",
+  6:"hue-rotate(160deg) drop-shadow(0 0 18px #60a5fa)",
+  7:"hue-rotate(340deg) drop-shadow(0 0 18px #a78bfa)",
+  8:"hue-rotate(20deg) drop-shadow(0 0 18px #f97316)",
+  9:"hue-rotate(120deg) drop-shadow(0 0 18px #facc15)",
+  10:"hue-rotate(40deg) drop-shadow(0 0 18px #fb923c)",
+  11:"hue-rotate(220deg) drop-shadow(0 0 18px #f59e0b)",
+  12:"saturate(0.9) brightness(1.05) drop-shadow(0 0 18px #22c55e)"
 };
 
 ticket.style.filter = ticketThemes[month];
@@ -438,6 +1244,10 @@ async function useTicket(){
     app.classList.remove("scanning");
 
     setUsed(true);
+
+    setTimeout(() =>{
+      showBonusBoxes();
+    },1600);
 
   }, 1200);
 }
@@ -602,6 +1412,8 @@ message.classList.add(
   }
 
   updateNextDate();
+  updateMonthCard();
+  
 }
 
 function setActive(){
@@ -670,6 +1482,7 @@ if(month === 12){
   },800);
 }
   updateNextDate();
+  updateMonthCard();
 }
 
 function updateNextDate(){
@@ -723,7 +1536,11 @@ function openMiniGame(){
 const choice = prompt(
   "🎮 ミニゲーム\n\n" +
   "1：💣 爆弾ゲーム（🪨1個消費）\n" +
-  "2：🎲 サイコロゲーム（👽3pt消費）\n\n" +
+  "2：🎲 サイコロゲーム（👽3pt消費）\n" +
+  "3：🌱 雑草もぐらたたき（無料）\n" +
+  "4：💖 ハートキャッチ（無料）\n" +
+  "5：🎰 スロットゲーム（👽5pt消費）\n" +
+  "6：🧠 記憶ゲーム（無料）\n\n" +
   "番号を入力してね"
 );
 
@@ -733,11 +1550,24 @@ if(choice === "1"){
 else if(choice === "2"){
   diceGame();
 }
+else if(choice === "3"){
+  whackGrassGame();
+}
+else if(choice === "4"){
+  heartCatchGame();
+}
+else if(choice === "5"){
+  slotGame();
+}
+else if(choice === "6"){
+  memoryGame();
+}
 else{
   alert("キャンセルしました");
 }
 
 }
+
 function mineGame(){
 
 if(stoneCount < 1){
@@ -749,40 +1579,133 @@ stoneCount--;
 localStorage.setItem("stoneCount", stoneCount);
 updateInventory();
 
-const pick = prompt(
-  "💣 MINE GAME\n\n1〜5を選んでね"
-);
+const game = document.createElement("div");
 
-const mine =
-  Math.floor(Math.random()*5)+1;
+game.style.position = "fixed";
+game.style.inset = "0";
+game.style.zIndex = "9999";
+game.style.background = "radial-gradient(circle,#3b0764,#020617)";
+game.style.color = "white";
+game.style.display = "flex";
+game.style.flexDirection = "column";
+game.style.justifyContent = "center";
+game.style.alignItems = "center";
+game.style.textAlign = "center";
+game.style.padding = "20px";
+game.style.boxSizing = "border-box";
 
-if(Number(pick) === mine){
-  mineDeathCount++;
+let bombIndex = Math.floor(Math.random() * 9);
+let safeCount = 0;
+let finished = false;
 
-  unlockAchievement(
-  "ach_mine",
-  "爆弾を踏んだ！"
-);
+game.innerHTML = `
+  <h2>💣 爆弾ゲーム 💣</h2>
+  <p>9個の箱から選んでね</p>
+  <p>3回セーフでクリア！爆弾を引いたら終了</p>
+  <p>SAFE：<span id="mineSafeCount">0</span> / 3</p>
+  <div class="mine-board" id="mineBoard"></div>
+  <button type="button" id="mineCancelBtn">やめる</button>
+`;
 
-  localStorage.setItem(
-  "mineDeathCount",
-  mineDeathCount
-  );
-  showJokePass(
-    "💀 完全ハズレ券 💀",
-    "お願いは破棄されました"
-  );
+document.body.appendChild(game);
 
-}else{
+const board = document.getElementById("mineBoard");
 
-  grassCount++;
-  localStorage.setItem("grassCount", grassCount);
-  updateInventory();
+for(let i=0; i<9; i++){
 
-  alert("🎉 SAFE!\n\n🌱 雑草 +1");
+  const cell = document.createElement("button");
 
+  cell.className = "mine-cell";
+  cell.textContent = "🎁";
+
+  cell.onclick = () => {
+
+    if(finished || cell.classList.contains("opened")){
+      return;
+    }
+
+    cell.classList.add("opened");
+
+    if(i === bombIndex){
+
+      finished = true;
+      cell.textContent = "💣";
+      cell.style.background = "#7f1d1d";
+      cell.style.boxShadow = "0 0 30px #ef4444";
+
+      mineDeathCount++;
+      localStorage.setItem("mineDeathCount", mineDeathCount);
+
+      unlockAchievement(
+        "ach_mine",
+        "爆弾を踏んだ！"
+      );
+
+      setTimeout(()=>{
+        showBombExplosion();
+        alert("💥 BOOM！\n\n爆弾を引きました…");
+        game.remove();
+      },500);
+
+    }else{
+
+      safeCount++;
+      cell.textContent = "✨";
+      cell.style.background = "#14532d";
+      cell.style.boxShadow = "0 0 25px #4ade80";
+
+      document.getElementById("mineSafeCount")
+        .textContent = safeCount;
+
+      if(safeCount >= 3){
+
+        finished = true;
+
+        grassCount += 3;
+        spacePoints += 5;
+
+        localStorage.setItem("grassCount", grassCount);
+        localStorage.setItem("spacePoints", spacePoints);
+
+        updateInventory();
+
+        setTimeout(()=>{
+          alert("🎉 CLEAR！\n\n🌱 雑草 +3\n👽 宇宙ポイント +5");
+          game.remove();
+        },500);
+      }
+    }
+  };
+
+  board.appendChild(cell);
 }
 
+document.getElementById("mineCancelBtn").onclick = () => {
+  game.remove();
+};
+}
+
+function showBombExplosion(){
+
+const effect = document.createElement("div");
+
+effect.textContent = "💥";
+effect.style.position = "fixed";
+effect.style.inset = "0";
+effect.style.zIndex = "10000";
+effect.style.display = "flex";
+effect.style.justifyContent = "center";
+effect.style.alignItems = "center";
+effect.style.fontSize = "90px";
+effect.style.background = "rgba(127,29,29,0.55)";
+effect.style.pointerEvents = "none";
+effect.style.animation = "startEventPop 1s ease forwards";
+
+document.body.appendChild(effect);
+
+setTimeout(()=>{
+  effect.remove();
+},1000);
 }
 
 function diceGame(){
@@ -793,35 +1716,827 @@ if(spacePoints < 3){
 }
 
 spacePoints -= 3;
-
-const dice =
-  Math.floor(Math.random()*6)+1;
-
-if(dice === 6){
-
-  cloverCount++;
-  alert("🎲 6！大当たり！\n\n🍀 四つ葉のクローバー GET!");
-
-}else if(dice >= 4){
-
-  stoneCount++;
-  alert("🎲 " + dice + "！\n\n🪨 石ころ +1");
-
-}else{
-
-  grassCount++;
-  alert("🎲 " + dice + "！\n\n🌱 雑草 +1");
-
-}
-
 localStorage.setItem("spacePoints", spacePoints);
-localStorage.setItem("grassCount", grassCount);
-localStorage.setItem("stoneCount", stoneCount);
-localStorage.setItem("cloverCount", cloverCount);
-
 updateInventory();
 
+const game = document.createElement("div");
+
+game.className = "game-full";
+game.style.background = "radial-gradient(circle,#7c2d12,#020617)";
+
+game.innerHTML = `
+  <div class="game-panel">
+    <h2>🎲 サイコロゲーム 🎲</h2>
+    <p>サイコロを振って報酬GET！</p>
+    <div id="diceDisplay" style="
+      font-size:90px;
+      margin:24px 0;
+      animation:pulseOpen 0.8s infinite;
+    ">🎲</div>
+    <button type="button" id="diceRollBtn">ROLL</button>
+    <button type="button" id="diceEndBtn">やめる</button>
+  </div>
+`;
+
+document.body.appendChild(game);
+
+const diceFaces = ["⚀","⚁","⚂","⚃","⚄","⚅"];
+const diceDisplay = document.getElementById("diceDisplay");
+
+let rolling = false;
+
+document.getElementById("diceRollBtn").onclick = () => {
+
+  if(rolling){
+    return;
+  }
+
+  rolling = true;
+
+  let count = 0;
+
+  const roll = setInterval(()=>{
+
+    diceDisplay.textContent =
+      diceFaces[Math.floor(Math.random()*6)];
+
+    count++;
+
+    if(count >= 18){
+
+      clearInterval(roll);
+
+      const dice = Math.floor(Math.random()*6) + 1;
+      diceDisplay.textContent = diceFaces[dice - 1];
+
+      setTimeout(()=>{
+
+        if(dice === 6){
+
+          cloverCount++;
+          localStorage.setItem("cloverCount", cloverCount);
+
+          alert("🎲 6！大当たり！\n\n🍀 四つ葉のクローバー GET!");
+
+        }else if(dice >= 4){
+
+          stoneCount++;
+          localStorage.setItem("stoneCount", stoneCount);
+
+          alert("🎲 " + dice + "！\n\n🪨 石ころ +1");
+
+        }else{
+
+          grassCount++;
+          localStorage.setItem("grassCount", grassCount);
+
+          alert("🎲 " + dice + "！\n\n🌱 雑草 +1");
+        }
+
+        updateInventory();
+        game.remove();
+
+      },500);
+    }
+
+  },80);
+};
+
+document.getElementById("diceEndBtn").onclick = () => {
+  game.remove();
+};
 }
+function whackGrassGame(){
+
+const game = document.createElement("div");
+
+game.style.position = "fixed";
+game.style.inset = "0";
+game.style.zIndex = "9999";
+game.style.background = "radial-gradient(circle,#14532d,#020617)";
+game.style.color = "white";
+game.style.display = "flex";
+game.style.flexDirection = "column";
+game.style.justifyContent = "center";
+game.style.alignItems = "center";
+game.style.textAlign = "center";
+game.style.padding = "20px";
+game.style.boxSizing = "border-box";
+
+let score = 0;
+let timeLeft = 10;
+let currentIndex = -1;
+let timer = null;
+let grassTimer = null;
+
+game.innerHTML = `
+  <h2>🌱 雑草もぐらたたき 🌱</h2>
+  <p>出てきた雑草をタップ！</p>
+  <p>TIME：<span id="whackTime">10</span>　SCORE：<span id="whackScore">0</span></p>
+  <div class="whack-area" id="whackArea"></div>
+  <button type="button" id="whackEndBtn">やめる</button>
+`;
+
+document.body.appendChild(game);
+
+const area = document.getElementById("whackArea");
+
+for(let i=0; i<9; i++){
+  const cell = document.createElement("button");
+  cell.className = "whack-cell";
+  cell.textContent = "🕳️";
+
+  cell.onclick = () => {
+    if(i === currentIndex){
+      score++;
+      cell.textContent = "✨";
+      cell.classList.add("hit");
+      document.getElementById("whackScore").textContent = score;
+      currentIndex = -1;
+    }
+  };
+
+  area.appendChild(cell);
+}
+
+const cells = area.querySelectorAll(".whack-cell");
+
+function showGrass(){
+  cells.forEach(c=>{
+    c.textContent = "🕳️";
+    c.classList.remove("hit");
+  });
+
+  currentIndex = Math.floor(Math.random()*9);
+  cells[currentIndex].textContent = "🌱";
+}
+
+showGrass();
+
+grassTimer = setInterval(showGrass, 650);
+
+timer = setInterval(()=>{
+
+  timeLeft--;
+  document.getElementById("whackTime").textContent = timeLeft;
+
+  if(timeLeft <= 0){
+    endWhackGame();
+  }
+
+},1000);
+
+document.getElementById("whackEndBtn").onclick = () => {
+  endWhackGame();
+};
+
+function endWhackGame(){
+
+  clearInterval(timer);
+  clearInterval(grassTimer);
+
+  grassCount += score;
+  localStorage.setItem("grassCount", grassCount);
+  updateInventory();
+
+  alert("🌱 結果発表！\n\nSCORE：" + score + "\n🌱 雑草 +" + score);
+
+  game.remove();
+}
+}
+
+function heartCatchGame(){
+
+const game = document.createElement("div");
+game.className = "game-full";
+game.style.background = "radial-gradient(circle,#be185d,#020617)";
+
+let score = 0;
+let combo = 0;
+let timeLeft = 12;
+let timer = null;
+let heartTimer = null;
+let dropSpeed = 420;
+
+game.innerHTML = `
+  <div class="game-panel">
+    <h2>💖 ハートキャッチ HARD 💖</h2>
+    <p>💖をタップ！🖤は押しちゃダメ！</p>
+    <p>
+      TIME：<span id="heartTime">12</span>
+      SCORE：<span id="heartScore">0</span>
+      COMBO：<span id="heartCombo">0</span>
+    </p>
+    <div class="heart-area" id="heartArea"></div>
+    <button type="button" id="heartEndBtn">やめる</button>
+  </div>
+`;
+
+document.body.appendChild(game);
+
+const area = document.getElementById("heartArea");
+
+function dropHeart(){
+
+  const heart = document.createElement("div");
+  heart.className = "falling-heart";
+
+  const r = Math.random();
+
+  if(r < 0.15){
+    heart.textContent = "💎";
+  }else if(r < 0.35){
+    heart.textContent = "🖤";
+  }else{
+    heart.textContent = "💖";
+  }
+
+  heart.style.left = Math.random() * 85 + "%";
+  heart.style.animationDuration = (1.1 + Math.random()*0.8) + "s";
+
+  heart.onclick = () => {
+
+    if(heart.textContent === "🖤"){
+
+      score = Math.max(0, score - 3);
+      combo = 0;
+
+      document.getElementById("heartScore").textContent = score;
+      document.getElementById("heartCombo").textContent = combo;
+
+      heart.textContent = "💥";
+      heart.style.pointerEvents = "none";
+
+      return;
+    }
+
+    combo++;
+
+    if(heart.textContent === "💎"){
+      score += 5 + Math.floor(combo / 5);
+    }else{
+      score += 1 + Math.floor(combo / 5);
+    }
+
+    document.getElementById("heartScore").textContent = score;
+    document.getElementById("heartCombo").textContent = combo;
+
+    heart.textContent = "✨";
+    heart.style.pointerEvents = "none";
+
+    setTimeout(()=>{
+      heart.remove();
+    },120);
+  };
+
+  area.appendChild(heart);
+
+  setTimeout(()=>{
+    heart.remove();
+  },2500);
+}
+
+heartTimer = setInterval(dropHeart, dropSpeed);
+
+timer = setInterval(()=>{
+
+  timeLeft--;
+  document.getElementById("heartTime").textContent = timeLeft;
+
+  if(timeLeft === 7){
+    clearInterval(heartTimer);
+    dropSpeed = 300;
+    heartTimer = setInterval(dropHeart, dropSpeed);
+  }
+
+  if(timeLeft === 4){
+    clearInterval(heartTimer);
+    dropSpeed = 220;
+    heartTimer = setInterval(dropHeart, dropSpeed);
+  }
+
+  if(timeLeft <= 0){
+    endHeartGame();
+  }
+
+},1000);
+
+document.getElementById("heartEndBtn").onclick = () => {
+  endHeartGame();
+};
+
+function endHeartGame(){
+
+  clearInterval(timer);
+  clearInterval(heartTimer);
+
+  const bonus = Math.floor(score / 10);
+  spacePoints += score;
+  grassCount += bonus;
+
+  localStorage.setItem("spacePoints", spacePoints);
+  localStorage.setItem("grassCount", grassCount);
+
+  updateInventory();
+
+  alert(
+    "💖 結果発表！\n\n" +
+    "SCORE：" + score + "\n" +
+    "MAX COMBO：" + combo + "\n" +
+    "👽 宇宙ポイント +" + score + "\n" +
+    "🌱 雑草 +" + bonus
+  );
+
+  game.remove();
+}
+}
+function slotGame(){
+
+if(spacePoints < 5){
+  alert("👽 宇宙ポイントが足りません！");
+  return;
+}
+
+spacePoints -= 5;
+localStorage.setItem("spacePoints", spacePoints);
+updateInventory();
+
+const game = document.createElement("div");
+game.className = "game-full";
+game.style.background = "radial-gradient(circle,#581c87,#020617)";
+
+const symbols = ["🌱","🪨","👽","🍀","💎","👑"];
+let reels = ["🌱","🌱","🌱"];
+let intervals = [];
+let stopped = 0;
+
+game.innerHTML = `
+  <div class="game-panel">
+    <h2>🎰 LUCKY SLOT 🎰</h2>
+    <p>STOPを押して1列ずつ止めてね</p>
+
+    <div class="slot-box">
+      <div class="slot-reel" id="slot0">🌱</div>
+      <div class="slot-reel" id="slot1">🌱</div>
+      <div class="slot-reel" id="slot2">🌱</div>
+    </div>
+
+    <p id="slotStatus">1つ目を止めてね</p>
+
+    <button type="button" id="slotStopBtn">STOP</button>
+    <button type="button" id="slotCancelBtn">やめる</button>
+  </div>
+`;
+
+document.body.appendChild(game);
+
+for(let i=0; i<3; i++){
+
+  intervals[i] = setInterval(()=>{
+
+    let symbol =
+      symbols[Math.floor(Math.random()*symbols.length)];
+
+    // GOLDEN DAYの時はレア絵柄が少し出やすい
+    if(localStorage.getItem("goldenDay") === "true"){
+      const r = Math.random();
+      if(r < 0.18){
+        symbol = "👑";
+      }else if(r < 0.34){
+        symbol = "💎";
+      }else if(r < 0.50){
+        symbol = "🍀";
+      }
+    }
+
+    reels[i] = symbol;
+    document.getElementById("slot" + i).textContent = symbol;
+
+  },90 + i * 25);
+}
+
+document.getElementById("slotStopBtn").onclick = () => {
+
+  if(stopped >= 3){
+    return;
+  }
+
+  clearInterval(intervals[stopped]);
+
+  const reel = document.getElementById("slot" + stopped);
+  reel.style.transform = "scale(1.15)";
+  reel.style.boxShadow = "0 0 28px #facc15";
+
+  setTimeout(()=>{
+    reel.style.transform = "scale(1)";
+  },180);
+
+  stopped++;
+
+  if(stopped === 1){
+    document.getElementById("slotStatus").textContent = "2つ目を止めてね";
+  }else if(stopped === 2){
+    document.getElementById("slotStatus").textContent = "最後を止めてね";
+  }else{
+    document.getElementById("slotStatus").textContent = "結果判定中...";
+    document.getElementById("slotStopBtn").disabled = true;
+
+    setTimeout(()=>{
+      judgeSlot();
+    },700);
+  }
+};
+
+document.getElementById("slotCancelBtn").onclick = () => {
+  intervals.forEach(clearInterval);
+  game.remove();
+};
+
+function judgeSlot(){
+
+  const a = reels[0];
+  const b = reels[1];
+  const c = reels[2];
+
+  const allSame = a === b && b === c;
+  const twoSame = a === b || b === c || a === c;
+
+  if(allSame){
+
+    showSlotFlash("🎰 JACKPOT 🎰");
+
+    if(a === "👑"){
+
+      legendGrassCount++;
+      spacePoints += 50;
+
+      localStorage.setItem("legendGrassCount", legendGrassCount);
+      localStorage.setItem("spacePoints", spacePoints);
+
+      unlockAchievement("ach_legend_grass","伝説の雑草GET！");
+
+      setTimeout(()=>{
+        alert("👑 超大当たり！\n\n👑 伝説の雑草 GET!!\n👽 宇宙ポイント +50");
+        updateInventory();
+        game.remove();
+      },900);
+
+    }else if(a === "💎"){
+
+      jewelCount += 3;
+      spacePoints += 25;
+
+      localStorage.setItem("jewelCount", jewelCount);
+      localStorage.setItem("spacePoints", spacePoints);
+
+      setTimeout(()=>{
+        alert("💎 大当たり！\n\n💎 きれいな石 +3\n👽 宇宙ポイント +25");
+        updateInventory();
+        game.remove();
+      },900);
+
+    }else if(a === "🍀"){
+
+      cloverCount += 2;
+      grassCount += 10;
+
+      localStorage.setItem("cloverCount", cloverCount);
+      localStorage.setItem("grassCount", grassCount);
+
+      setTimeout(()=>{
+        alert("🍀 ラッキー大当たり！\n\n🍀 クローバー +2\n🌱 雑草 +10");
+        updateInventory();
+        game.remove();
+      },900);
+
+    }else{
+
+      spacePoints += 20;
+      grassCount += 5;
+
+      localStorage.setItem("spacePoints", spacePoints);
+      localStorage.setItem("grassCount", grassCount);
+
+      setTimeout(()=>{
+        alert("🎰 大当たり！\n\n👽 宇宙ポイント +20\n🌱 雑草 +5");
+        updateInventory();
+        game.remove();
+      },900);
+    }
+
+  }else if(twoSame){
+
+    showSlotFlash("✨ MINI HIT ✨");
+
+    grassCount += 3;
+    stoneCount++;
+
+    localStorage.setItem("grassCount", grassCount);
+    localStorage.setItem("stoneCount", stoneCount);
+
+    setTimeout(()=>{
+      alert("✨ 小当たり！\n\n🌱 雑草 +3\n🪨 石ころ +1");
+      updateInventory();
+      game.remove();
+    },700);
+
+  }else{
+
+    stoneCount++;
+    localStorage.setItem("stoneCount", stoneCount);
+
+    setTimeout(()=>{
+      alert("🎰 はずれ…？\n\n🪨 石ころ +1");
+      updateInventory();
+      game.remove();
+    },500);
+  }
+}
+}
+
+function showSlotFlash(text){
+
+const flash = document.createElement("div");
+
+flash.textContent = text;
+flash.style.position = "fixed";
+flash.style.inset = "0";
+flash.style.zIndex = "10000";
+flash.style.display = "flex";
+flash.style.justifyContent = "center";
+flash.style.alignItems = "center";
+flash.style.textAlign = "center";
+flash.style.fontSize = "42px";
+flash.style.fontWeight = "bold";
+flash.style.color = "#ffd700";
+flash.style.background = "rgba(0,0,0,0.55)";
+flash.style.textShadow = "0 0 25px #ffd700";
+flash.style.pointerEvents = "none";
+flash.style.animation = "fadePremium 1s ease";
+
+document.body.appendChild(flash);
+
+setTimeout(()=>{
+  flash.remove();
+},1000);
+}
+
+function judgeSlot(){
+
+  const a = reels[0];
+  const b = reels[1];
+  const c = reels[2];
+
+  setTimeout(()=>{
+
+    if(a === b && b === c){
+
+      if(a === "👑"){
+        legendGrassCount++;
+        localStorage.setItem("legendGrassCount", legendGrassCount);
+        unlockAchievement("ach_legend_grass","伝説の雑草GET！");
+        alert("👑 JACKPOT！\n\n伝説の雑草 GET!!");
+      }else if(a === "💎"){
+        jewelCount += 2;
+        localStorage.setItem("jewelCount", jewelCount);
+        alert("💎 大当たり！\n\nきれいな石 +2");
+      }else{
+        spacePoints += 20;
+        localStorage.setItem("spacePoints", spacePoints);
+        alert("🎰 大当たり！\n\n👽 宇宙ポイント +20");
+      }
+
+    }else if(a === b || b === c || a === c){
+
+      grassCount += 3;
+      localStorage.setItem("grassCount", grassCount);
+      alert("🎰 小当たり！\n\n🌱 雑草 +3");
+
+    }else{
+
+      stoneCount++;
+      localStorage.setItem("stoneCount", stoneCount);
+      alert("🎰 はずれ…？\n\n🪨 石ころ +1");
+    }
+
+    updateInventory();
+    game.remove();
+
+  },500);
+}
+
+function memoryGame(){
+
+const game = document.createElement("div");
+game.className = "game-full";
+game.style.background = "radial-gradient(circle,#1e1b4b,#020617)";
+const symbols = [
+  "💜","🌱","👽","💎",
+  "🎀","🪨","🌙","🎲",
+  "✨","🍀","🦖","🌠"
+];
+let sequence = [];
+let player = [];
+let level = 1;
+let clickable = false;
+let miss = 0;
+
+game.innerHTML = `
+  <div class="game-panel">
+    <h2>🧠 記憶ゲーム HARD 🧠</h2>
+    <p>光った順番を覚えてタップ！</p>
+    <p>LEVEL：<span id="memoryLevel">1</span>　MISS：<span id="memoryMiss">0</span>/3</p>
+    <div class="memory-board hard" id="memoryBoard"></div>
+    <button type="button" id="memoryStartBtn">START</button>
+    <button type="button" id="memoryEndBtn">やめる</button>
+  </div>
+`;
+
+document.body.appendChild(game);
+
+const board = document.getElementById("memoryBoard");
+
+for(let i=0; i<12; i++){
+
+  const cell = document.createElement("button");
+  cell.className = "memory-cell";
+  cell.textContent = symbols[i];
+
+  cell.onclick = () => {
+    if(!clickable) return;
+
+    player.push(i);
+    flashCell(i);
+
+    const idx = player.length - 1;
+
+    if(player[idx] !== sequence[idx]){
+      miss++;
+      document.getElementById("memoryMiss").textContent = miss;
+      player = [];
+
+      if(miss >= 3){
+        endMemoryGame(false);
+        return;
+      }
+
+      clickable = false;
+      setTimeout(()=>{
+        replaySequence();
+      },700);
+      return;
+    }
+
+    if(player.length === sequence.length){
+      clickable = false;
+      level++;
+      document.getElementById("memoryLevel").textContent = level;
+
+      if(level > 10){
+        endMemoryGame(true);
+        return;
+      }
+
+      setTimeout(nextRound,800);
+    }
+  };
+
+  board.appendChild(cell);
+}
+
+document.getElementById("memoryStartBtn").onclick = () => {
+  level = 1;
+  miss = 0;
+  sequence = [];
+  player = [];
+  document.getElementById("memoryLevel").textContent = level;
+  document.getElementById("memoryMiss").textContent = miss;
+  nextRound();
+};
+
+document.getElementById("memoryEndBtn").onclick = () => {
+  game.remove();
+};
+
+function nextRound(){
+  player = [];
+  sequence = [];
+
+  // レベル1でも最初から5回光る
+  const length = 4 + level;
+
+  for(let i=0; i<length; i++){
+    sequence.push(Math.floor(Math.random()*12));
+  }
+
+  replaySequence();
+}
+
+function replaySequence(){
+
+  player = [];
+  clickable = false;
+
+  let i = 0;
+
+  // レベルが上がるほど速くなる
+  const speed = Math.max(160, 360 - level * 25);
+
+  const show = setInterval(()=>{
+
+    flashCell(sequence[i]);
+    i++;
+
+    if(i >= sequence.length){
+      clearInterval(show);
+      setTimeout(()=>{
+        clickable = true;
+      },300);
+    }
+
+  },speed);
+}
+
+function flashCell(index){
+  const cells = board.querySelectorAll(".memory-cell");
+  cells[index].classList.add("active");
+
+  setTimeout(()=>{
+    cells[index].classList.remove("active");
+  },100);
+}
+
+function endMemoryGame(clear){
+
+  if(clear){
+    spacePoints += 20;
+    jewelCount += 2;
+    grassCount += 5;
+
+    localStorage.setItem("spacePoints", spacePoints);
+    localStorage.setItem("jewelCount", jewelCount);
+    localStorage.setItem("grassCount", grassCount);
+
+    updateInventory();
+
+    alert(
+      "🎉 PERFECT CLEAR！\n\n" +
+      "👽 宇宙ポイント +20\n" +
+      "💎 きれいな石 +2\n" +
+      "🌱 雑草 +5"
+    );
+  }else{
+
+    // 到達レベルに応じて報酬
+    const reward = Math.max(1, level - 1);
+    spacePoints += reward;
+    localStorage.setItem("spacePoints", spacePoints);
+    updateInventory();
+
+    alert(
+      "🧠 GAME OVER\n\n" +
+      "到達LEVEL：" + level + "\n" +
+      "👽 宇宙ポイント +" + reward
+    );
+  }
+
+  game.remove();
+}
+}
+
+function nextRound(){
+
+  player = [];
+  sequence.push(Math.floor(Math.random()*4));
+
+  let i = 0;
+  clickable = false;
+
+  const show = setInterval(()=>{
+
+    flashCell(sequence[i]);
+    i++;
+
+    if(i >= sequence.length){
+      clearInterval(show);
+      setTimeout(()=>{
+        clickable = true;
+      },400);
+    }
+
+  },650);
+}
+
+function flashCell(index){
+
+  const cells = board.querySelectorAll(".memory-cell");
+  cells[index].classList.add("active");
+
+  setTimeout(()=>{
+    cells[index].classList.remove("active");
+  },300);
+}
+
 
 function shakeScreen(){
 
@@ -861,6 +2576,33 @@ document.getElementById("grassCount")
 document.getElementById("stoneCount")
   .textContent = stoneCount;
 
+document.getElementById("freeGachaCount")
+  .textContent =
+  Number(localStorage.getItem("freeGacha")) || 0;
+
+  updateStatusCards();
+}
+
+function updateStatusCards(){
+
+const passEl = document.getElementById("statusPassValue");
+const loginEl = document.getElementById("statusLoginValue");
+const gachaEl = document.getElementById("statusGachaValue");
+const mineEl = document.getElementById("statusMineValue");
+
+if(!passEl || !loginEl || !gachaEl || !mineEl){
+  return;
+}
+
+if(localStorage.getItem("usedMonth") === thisMonth){
+  passEl.textContent = "USED";
+}else{
+  passEl.textContent = "ACTIVE";
+}
+
+loginEl.textContent = loginStreak + "日";
+gachaEl.textContent = gachaCount + "回";
+mineEl.textContent = mineDeathCount + "回";
 }
 
 function unlockAchievement(key, title){
@@ -879,37 +2621,82 @@ showJokePass(
 }
 function showAchievements(){
 
-let text =
-  "🏆 実績\n\n";
+const room = document.createElement("div");
+room.className = "game-full";
+room.style.background = "radial-gradient(circle,#312e81,#020617)";
 
-text += "🔓 初ログイン\n";
+const achievements = [
+  {
+    icon:"🔥",
+    title:"初ログイン",
+    unlocked:true,
+    desc:"アプリを開いた"
+  },
+  {
+    icon:"🔥",
+    title:"3日連続ログイン",
+    unlocked:loginStreak >= 3,
+    desc:"3日連続で起動"
+  },
+  {
+    icon:"🎰",
+    title:"ガチャ10回",
+    unlocked:gachaCount >= 10,
+    desc:"ガチャを10回まわした"
+  },
+  {
+    icon:"👑",
+    title:"伝説の雑草GET",
+    unlocked:legendGrassCount >= 1,
+    desc:"伝説の雑草を入手"
+  },
+  {
+    icon:"💣",
+    title:"爆弾を踏んだ",
+    unlocked:mineDeathCount >= 1,
+    desc:"爆弾ゲームで爆発"
+  },
+  {
+    icon:"🌱",
+    title:"草コレクター",
+    unlocked:grassCount >= 30,
+    desc:"雑草を30個以上所持"
+  }
+];
 
-text += loginStreak >= 3
-  ? "🔓 3日連続ログイン\n"
-  : "🔒 3日連続ログイン\n";
+room.innerHTML = `
+  <div class="game-panel">
+    <h2>🏆 実績ルーム 🏆</h2>
+    <p>解除した実績を確認できます</p>
+    <div class="achieve-list" id="achieveList"></div>
+    <button type="button" id="achieveClose">戻る</button>
+  </div>
+`;
 
-text += gachaCount >= 10
-  ? "🔓 ガチャ10回\n"
-  : "🔒 ガチャ10回\n";
+document.body.appendChild(room);
 
-text += legendGrassCount >= 1
-  ? "🔓 伝説の雑草GET\n"
-  : "🔒 伝説の雑草GET\n";
+const list = document.getElementById("achieveList");
 
-text += mineDeathCount >= 1
-  ? "🔓 爆弾を踏んだ\n"
-  : "🔒 爆弾を踏んだ\n";
+achievements.forEach(a => {
+  const card = document.createElement("div");
+  card.className = a.unlocked
+    ? "achieve-card unlocked"
+    : "achieve-card locked";
 
-text += localStorage.getItem("ach_mine") === "true"
-  ? "🔓 爆発マスター\n"
-  : "🔒 ？？？\n";
+  card.innerHTML = `
+    <div class="achieve-icon">${a.unlocked ? a.icon : "🔒"}</div>
+    <div>
+      <div class="achieve-title">${a.unlocked ? a.title : "？？？"}</div>
+      <div class="achieve-desc">${a.unlocked ? a.desc : "まだ未達成"}</div>
+    </div>
+  `;
 
-text += localStorage.getItem("ach_legend_grass") === "true"
-  ? "🔓 伝説の草使い\n"
-  : "🔒 ？？？\n";
+  list.appendChild(card);
+});
 
-alert(text);
-
+document.getElementById("achieveClose").onclick = () => {
+  room.remove();
+};
 }
 function showMonthlyBonus(){
 
@@ -1072,6 +2859,185 @@ alert(
 
 }
 
+function runStartEvent(){
+
+const r = Math.random();
+
+let title = "";
+let text = "";
+let emoji = "✨";
+let eventClass = "";
+if(r < 0.20){
+
+  spacePoints += 10;
+  localStorage.setItem("spacePoints", spacePoints);
+
+  title = "🌠 流れ星イベント";
+  text = "お願いの気配を感じた…\n👽 宇宙ポイント +10";
+  emoji = "🌠";
+  eventClass = "event-star";
+
+}else if(r < 0.40){
+
+  grassCount += 5;
+  localStorage.setItem("grassCount", grassCount);
+
+  title = "🌱 雑草大量発生";
+  text = "庭が大変なことに…\n🌱 雑草 +5";
+  emoji = "🌱";
+  eventClass = "event-grass";
+
+}else if(r < 0.55){
+
+  stoneCount += 3;
+  localStorage.setItem("stoneCount", stoneCount);
+
+  title = "🪨 石ころフィーバー";
+  text = "足元に石ころが転がっていた\n🪨 石ころ +3";
+  emoji = "🪨";
+  eventClass = "event-stone";
+
+}else if(r < 0.70){
+
+  let freeGacha =
+    Number(localStorage.getItem("freeGacha")) || 0;
+
+  freeGacha++;
+  localStorage.setItem("freeGacha", freeGacha);
+
+  title = "🎰 ガチャチャンス";
+  text = "今日は運がいいかも…\n🎰 ガチャ無料券 +1";
+  emoji = "🌟";
+  eventClass = "event-gacha";
+
+}else if(r < 0.82){
+
+  title = "💜 彼女の気まぐれモード";
+  text = "今日はちょっと優しい日かもしれない…";
+  emoji = "❤️";
+  eventClass = "event-love";
+
+}else if(r < 0.92){
+
+  title = "👽 宇宙人襲来";
+  text = "特に何もしていないのに監視されています";
+  emoji = "👽👾";
+  eventClass = "event-alien";
+
+}else if(r < 0.98){
+
+jewelCount++;
+localStorage.setItem("jewelCount", jewelCount);
+
+title = "💎 ラッキーデイ";
+text = "なんかキラッとしてた\n💎 きれいな石 +1";
+emoji = "💎";
+eventClass = "event-jewel";
+
+}else{
+
+localStorage.setItem("goldenDay", "true");
+
+title = "👑 GOLDEN DAY";
+text = "今日は特別な日…！\n🎁 ボーナスボックスで『もう1回お願い券』が出やすくなります";
+emoji = "👑";
+eventClass = "event-golden";
+}
+eventBanner.className = "";
+eventBanner.id = "eventBanner";
+
+eventBanner.innerHTML =
+  "<b>" + emoji + " " + title + "</b><br>" +
+  text.replace(/\n/g,"<br>");
+
+eventBanner.classList.add("show");
+
+if(eventClass){
+  eventBanner.classList.add(eventClass);
+}
+
+showEventTitle(title, emoji);
+showStartEventEffect(emoji);
+updateInventory();
+updateMonthCard();
+updateHomeCard();
+}
+
+function showStartEventEffect(emoji){
+
+const effect = document.createElement("div");
+
+effect.className = "start-event-effect";
+effect.textContent = emoji;
+
+document.body.appendChild(effect);
+
+setTimeout(()=>{
+  effect.remove();
+},1200);
+}
+
+function showEventTitle(title, emoji){
+
+const pop = document.createElement("div");
+pop.className = "event-title-pop";
+
+pop.innerHTML = 
+'<div class="small">EVENT START!!</div>'+
+'<div class="big">' + emoji +''+title +emoji+'</div>';
+
+document.body.appendChild(pop);
+
+setTimeout(()=>{
+  pop.remove();
+},3600);
+}
+function startSeasonEffect(){
+
+const seasonEmojis = {
+  1:["✨","🎍","❄️"],
+  2:["💘","🍫","💕"],
+  3:["🎂","🎉","🌸"],
+  4:["🌸","🌱","✨"],
+  5:["🩵","🌿","✨"],
+  6:["💧","☔","🫧"],
+  7:["🎋","🌠","✨"],
+  8:["🎆","🏮","✨"],
+  9:["🌕","⭐","🍂"],
+  10:["🎃","🦇","🍬"],
+  11:["🍁","🍂","✨"],
+  12:["❄️","🎄","🎁"]
+};
+
+const emojis = seasonEmojis[month] || ["✨"];
+
+for(let i=0; i<18; i++){
+
+  const e = document.createElement("div");
+
+  e.className = "season-emoji";
+  e.textContent =
+    emojis[Math.floor(Math.random()*emojis.length)];
+
+  e.style.left = Math.random()*100 + "vw";
+  e.style.fontSize = (18 + Math.random()*22) + "px";
+  e.style.animationDuration = (4 + Math.random()*5) + "s";
+  e.style.animationDelay = Math.random()*2 + "s";
+
+  document.body.appendChild(e);
+
+  setTimeout(()=>{
+    e.remove();
+  },9000);
+}
+
+document.body.classList.add("background-flash");
+
+setTimeout(()=>{
+  document.body.classList.remove("background-flash");
+},1200);
+}
+
 function showGift(){
 
 const gifts = [
@@ -1113,80 +3079,336 @@ alert(
 );
 
 }
+function showBonusBoxes(){
+
+const box = document.createElement("div");
+
+box.style.position = "fixed";
+box.style.inset = "0";
+box.style.background = "rgba(0,0,0,0.88)";
+box.style.zIndex = "9999";
+box.style.display = "flex";
+box.style.flexDirection = "column";
+box.style.justifyContent = "center";
+box.style.alignItems = "center";
+box.style.color = "white";
+box.style.textAlign = "center";
+
+box.innerHTML = `
+  <h2>🎁 BONUS BOX CHANCE 🎁</h2>
+  <p>プレゼントボックスを1つ選んでね</p>
+  <div id="bonusBoxArea" style="
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:8px;
+    width:90%;
+    max-width:360px;
+    margin-top:20px;
+  "></div>
+`;
+
+document.body.appendChild(box);
+
+let rewards = [
+  "extraPass",
+  "requestSent",
+  "grass",
+  "freeGacha",
+  "jewel"
+];
+
+if(localStorage.getItem("goldenDay") === "true"){
+  rewards = [
+    "extraPass",
+    "extraPass",
+    "grass",
+    "freeGacha",
+    "jewel"
+  ];
+
+  localStorage.removeItem("goldenDay");
+}
+
+rewards.sort(() => Math.random() - 0.5);
+
+const area = document.getElementById("bonusBoxArea");
+
+rewards.forEach(reward => {
+  const btn = document.createElement("button");
+  btn.textContent = "🎁";
+  btn.style.fontSize = "34px";
+  btn.style.padding = "18px 0";
+  btn.style.borderRadius = "18px";
+  btn.style.background = "#d946ef";
+  btn.style.border = "0";
+
+  btn.onclick = () => {
+    openBonusReward(reward, box, btn);
+  };
+
+  area.appendChild(btn);
+});
+}
+
+function openBonusReward(reward, box, btn){
+
+btn.disabled = true;
+btn.style.transform = "scale(1.25) rotate(8deg)";
+btn.style.boxShadow = "0 0 30px #ffd700";
+box.style.background = "radial-gradient(circle,#4c1d95,#050008)";
+
+const flash = document.createElement("div");
+flash.innerHTML = "✨ 🎁 ✨";
+flash.style.position = "fixed";
+flash.style.inset = "0";
+flash.style.display = "flex";
+flash.style.justifyContent = "center";
+flash.style.alignItems = "center";
+flash.style.fontSize = "56px";
+flash.style.background = "rgba(255,255,255,0.12)";
+flash.style.zIndex = "10000";
+flash.style.pointerEvents = "none";
+flash.style.animation = "fadePremium 0.7s ease";
+
+document.body.appendChild(flash);
+
+setTimeout(()=>{
+  flash.remove();
+},700);
+
+if(reward === "extraPass"){
+
+  btn.textContent = "👑";
+
+  localStorage.removeItem("usedMonth");
+  localStorage.removeItem("requestText");
+
+  setTimeout(()=>{
+  alert("👑 もう1回お願い券 GET！\n\n今月もう1回お願いできます♡");
+
+  const useBtn = document.getElementById("btn");
+
+  app.classList.remove("used");
+  ticket.src = "ticket-active.png";
+  ticket.style.filter = ticketThemes[month];
+
+  requestText.disabled = false;
+  requestText.value = "";
+
+  statusText.textContent = "ACTIVE";
+  useBtn.textContent = "使用する";
+  useBtn.disabled = false;
+
+  message.textContent = "SPECIAL BONUS!\nもう1回お願いできます♡";
+  message.classList.add("show-message");
+
+  updateNextDate();
+  box.remove();
+},800);
+
+}else if(reward === "requestSent"){
+
+  btn.textContent = "💌";
+
+  setTimeout(()=>{
+    alert("💌 REQUEST SENT\n\nお願い事がそのまま送られました♡");
+    box.remove();
+  },800);
+
+}else if(reward === "grass"){
+
+  btn.textContent = "🌱";
+
+  grassCount += 5;
+  localStorage.setItem("grassCount", grassCount);
+  updateInventory();
+
+  setTimeout(()=>{
+    alert("🌱 雑草 +5 GET！");
+    box.remove();
+  },800);
+
+}else if(reward === "freeGacha"){
+
+  btn.textContent = "🎰";
+
+  let freeGacha =
+    Number(localStorage.getItem("freeGacha")) || 0;
+
+  freeGacha++;
+  localStorage.setItem("freeGacha", freeGacha);
+
+  setTimeout(()=>{
+    alert("🎰 ガチャ無料券 ×1 GET！");
+    box.remove();
+  },800);
+
+}else if(reward === "jewel"){
+
+  btn.textContent = "💎";
+
+  jewelCount++;
+  localStorage.setItem("jewelCount", jewelCount);
+
+  setTimeout(()=>{
+    alert("💎 きれいな石 +1 GET！");
+    box.remove();
+  },800);
+}
+}
 
 function grassGacha(){
 
-if(grassCount < 3){
-  alert("🌱 雑草が足りません！");
-  return;
-}
+let freeGacha =
+  Number(localStorage.getItem("freeGacha")) || 0;
 
-grassCount -= 3;
+if(freeGacha > 0){
+
+  freeGacha--;
+  localStorage.setItem("freeGacha", freeGacha);
+
+}else{
+
+  if(grassCount < 3){
+    alert("🌱 雑草が足りません！");
+    return;
+  }
+
+  grassCount -= 3;
+}
 
 gachaCount++;
 localStorage.setItem("gachaCount", gachaCount);
+localStorage.setItem("grassCount", grassCount);
+updateInventory();
 
-const effect = document.createElement("div");
+const game = document.createElement("div");
+game.className = "game-full";
+game.style.background = "radial-gradient(circle,#581c87,#020617)";
 
-effect.innerHTML = "🎰";
-effect.style.position = "fixed";
-effect.style.inset = "0";
-effect.style.display = "flex";
-effect.style.justifyContent = "center";
-effect.style.alignItems = "center";
-effect.style.fontSize = "60px";
-effect.style.fontWeight = "bold";
-effect.style.background = "rgba(0,0,0,0.9)";
-effect.style.zIndex = "9999";
+game.innerHTML = `
+  <div class="game-panel">
+    <h2>🎰 GRASS GACHA 🎰</h2>
+    <p>カプセル抽選中...</p>
+    <div id="gachaCapsule" style="
+      font-size:90px;
+      margin:26px 0;
+      animation:pulseOpen .5s infinite;
+    ">🎁</div>
+    <div id="gachaResultText" style="
+      font-size:20px;
+      font-weight:bold;
+      min-height:56px;
+    "></div>
+  </div>
+`;
 
-document.body.appendChild(effect);
+document.body.appendChild(game);
 
-const texts = ["🌱","🪨","👽","🍀","👑"];
+const capsule = document.getElementById("gachaCapsule");
+const resultText = document.getElementById("gachaResultText");
+
+const rollItems = ["🌱","🪨","👽","🍀","💎","👑","🎁","✨"];
 let i = 0;
 
 const rolling = setInterval(()=>{
-  effect.innerHTML = texts[i % texts.length];
+  capsule.textContent = rollItems[i % rollItems.length];
   i++;
-},100);
+},90);
 
 setTimeout(()=>{
 
   clearInterval(rolling);
-  effect.remove();
 
   const r = Math.random();
+  let resultEmoji = "";
+  let resultMessage = "";
+  let rare = false;
 
-  if(r < 0.60){
+  if(r < 0.55){
     grassCount++;
-    alert("🎰 GRASS GACHA\n\n🌱 雑草 +1");
+    resultEmoji = "🌱";
+    resultMessage = "雑草 +1";
   }
-  else if(r < 0.85){
+  else if(r < 0.78){
     stoneCount++;
-    alert("🎰 GRASS GACHA\n\n🪨 石ころ +1");
+    resultEmoji = "🪨";
+    resultMessage = "石ころ +1";
   }
-  else if(r < 0.95){
-    spacePoints += 3;
-    alert("🎰 GRASS GACHA\n\n👽 宇宙ポイント +3");
+  else if(r < 0.92){
+    spacePoints += 5;
+    resultEmoji = "👽";
+    resultMessage = "宇宙ポイント +5";
   }
-  else if(r < 0.99){
+  else if(r < 0.975){
     cloverCount++;
-    alert("🎰 GRASS GACHA\n\n🍀 四つ葉のクローバー GET!");
+    resultEmoji = "🍀";
+    resultMessage = "四つ葉のクローバー GET!";
+    rare = true;
+  }
+  else if(r < 0.995){
+    jewelCount++;
+    resultEmoji = "💎";
+    resultMessage = "きれいな石 +1";
+    rare = true;
   }
   else{
     legendGrassCount++;
+    resultEmoji = "👑";
+    resultMessage = "伝説の雑草 GET!!";
+    rare = true;
     unlockAchievement("ach_legend_grass","伝説の雑草GET！");
-    showJokePass("🌈 LEGEND ITEM 🌈","👑 伝説の雑草 GET!!");
   }
 
   localStorage.setItem("spacePoints", spacePoints);
   localStorage.setItem("grassCount", grassCount);
   localStorage.setItem("stoneCount", stoneCount);
   localStorage.setItem("cloverCount", cloverCount);
+  localStorage.setItem("jewelCount", jewelCount);
   localStorage.setItem("legendGrassCount", legendGrassCount);
 
   updateInventory();
 
-},1500);
+  capsule.textContent = resultEmoji;
+  capsule.style.animation = "none";
+  capsule.style.transform = "scale(1.25)";
+  capsule.style.textShadow = rare
+    ? "0 0 35px gold"
+    : "0 0 25px #d946ef";
+
+  resultText.innerHTML =
+    rare
+    ? "✨ RARE GET!! ✨<br>" + resultMessage
+    : "RESULT<br>" + resultMessage;
+
+  if(rare){
+    showSlotFlash("✨ RARE GET!! ✨");
+  }
+
+  setTimeout(()=>{
+
+    game.innerHTML = `
+      <div class="game-panel">
+        <h2>🎰 RESULT 🎰</h2>
+        <div style="font-size:90px;margin:24px 0;">${resultEmoji}</div>
+        <p style="font-size:22px;font-weight:bold;">${resultMessage}</p>
+        <button type="button" id="gachaAgainBtn">もう1回</button>
+        <button type="button" id="gachaCloseBtn">戻る</button>
+      </div>
+    `;
+
+    document.getElementById("gachaAgainBtn").onclick = () => {
+      game.remove();
+      grassGacha();
+    };
+
+    document.getElementById("gachaCloseBtn").onclick = () => {
+      game.remove();
+    };
+
+  },1200);
+
+},1800);
 }
 
 function openShop(){
@@ -1249,7 +3471,224 @@ localStorage.setItem("jewelCount", jewelCount);
 updateInventory();
 }
 
+function showTab(tabId){
 
+document.querySelectorAll(".tab-content")
+  .forEach(tab => {
+    tab.classList.remove("active");
+  });
+
+document.getElementById(tabId)
+  .classList.add("active");
+
+updateInventory();
+updateMonthCard();
+updateHomeCard();
+}
+
+function updateMonthCard(){
+
+const monthStatus = document.getElementById("monthStatusText");
+const monthNext   = document.getElementById("monthNextText");
+const monthEvent  = document.getElementById("monthEventText");
+const monthEffect = document.getElementById("monthEffectText");
+
+if(!monthStatus || !monthNext || !monthEvent || !monthEffect){
+  return;
+}
+
+const now = new Date();
+const thisMonth = now.getFullYear() + "-" + (now.getMonth()+1);
+const usedMonth = localStorage.getItem("usedMonth");
+
+// ===== STATUS =====
+if(usedMonth === thisMonth){
+  monthStatus.textContent = "USED";
+}else{
+  monthStatus.textContent = "ACTIVE";
+}
+
+// ===== NEXT =====
+const next = new Date(now.getFullYear(), now.getMonth()+1, 1);
+monthNext.textContent = next.toLocaleDateString();
+
+// ===== EVENT / EFFECT =====
+const banner = document.getElementById("eventBanner");
+
+if(banner && banner.innerText.trim() !== ""){
+  const lines = banner.innerText.trim().split("\n");
+
+  // 1行目 → イベント名
+  monthEvent.textContent = lines[0] || "なし";
+
+  // 2行目以降を効果としてまとめる
+  if(lines.length >= 2){
+    monthEffect.textContent = lines[lines.length - 1] || "なし";
+  }else if(localStorage.getItem("goldenDay") === "true"){
+    monthEffect.textContent = "🎁 もう1回お願い券が出やすい";
+  }else{
+    monthEffect.textContent = "なし";
+  }
+
+}else{
+  monthEvent.textContent = "なし";
+
+  if(localStorage.getItem("goldenDay") === "true"){
+    monthEffect.textContent = "🎁 もう1回お願い券が出やすい";
+  }else{
+    monthEffect.textContent = "なし";
+  }
+}
+}
+
+function updateHomeCard(){
+
+const pass = document.getElementById("homePassText");
+const event = document.getElementById("homeEventText");
+const point = document.getElementById("homePointText");
+const grass = document.getElementById("homeGrassText");
+
+if(!pass || !event || !point || !grass){
+  return;
+}
+
+pass.textContent =
+  localStorage.getItem("usedMonth") === thisMonth
+  ? "USED"
+  : "ACTIVE";
+
+point.textContent = spacePoints;
+grass.textContent = grassCount;
+
+const banner = document.getElementById("eventBanner");
+
+if(banner && banner.innerText.trim() !== ""){
+  event.textContent =
+    banner.innerText.trim().split("\n")[0];
+}else{
+  event.textContent = "なし";
+}
+}
+function openGachaRoom(){
+
+const room = document.createElement("div");
+room.className = "game-full";
+room.style.background = "radial-gradient(circle,#581c87,#020617)";
+
+room.innerHTML = `
+  <div class="game-panel">
+    <h2>🎰 ガチャルーム 🎰</h2>
+    <p>🌱 雑草3個 または 🎰無料券で回せます</p>
+    <p>
+      🌱 雑草：${grassCount}<br>
+      🎰 無料券：${Number(localStorage.getItem("freeGacha")) || 0}
+    </p>
+    <button type="button" id="roomGachaBtn">ガチャを回す</button>
+    <button type="button" id="roomCloseBtn">戻る</button>
+  </div>
+`;
+
+document.body.appendChild(room);
+
+document.getElementById("roomGachaBtn").onclick = () => {
+  room.remove();
+  grassGacha();
+};
+
+document.getElementById("roomCloseBtn").onclick = () => {
+  room.remove();
+};
+}
+function openExchangeRoom(){
+
+const room = document.createElement("div");
+room.className = "game-full";
+room.style.background = "radial-gradient(circle,#14532d,#020617)";
+
+room.innerHTML = `
+  <div class="game-panel">
+    <h2>🛒 換金所 🛒</h2>
+    <p>素材を交換できます</p>
+
+    <button type="button" id="ex1">🌱3個 → 🍀クローバー</button>
+    <button type="button" id="ex2">🪨2個 → 💎きれいな石</button>
+    <button type="button" id="ex3">👽15pt → 👽宇宙人候補</button>
+    <button type="button" id="exClose">戻る</button>
+  </div>
+`;
+
+document.body.appendChild(room);
+
+document.getElementById("ex1").onclick = () => {
+  if(grassCount < 3){
+    alert("🌱 雑草が足りません！");
+    return;
+  }
+  grassCount -= 3;
+  cloverCount++;
+  localStorage.setItem("grassCount", grassCount);
+  localStorage.setItem("cloverCount", cloverCount);
+  updateInventory();
+  alert("🍀 クローバー GET！");
+};
+
+document.getElementById("ex2").onclick = () => {
+  if(stoneCount < 2){
+    alert("🪨 石ころが足りません！");
+    return;
+  }
+  stoneCount -= 2;
+  jewelCount++;
+  localStorage.setItem("stoneCount", stoneCount);
+  localStorage.setItem("jewelCount", jewelCount);
+  updateInventory();
+  alert("💎 きれいな石 GET！");
+};
+
+document.getElementById("ex3").onclick = () => {
+  if(spacePoints < 15){
+    alert("👽 宇宙ポイントが足りません！");
+    return;
+  }
+  spacePoints -= 15;
+  localStorage.setItem("spacePoints", spacePoints);
+  updateInventory();
+  alert("👽 宇宙人候補に認定されました");
+};
+
+document.getElementById("exClose").onclick = () => {
+  room.remove();
+};
+}
+function openCollectionRoom(){
+
+const room = document.createElement("div");
+room.className = "game-full";
+room.style.background = "radial-gradient(circle,#1e1b4b,#020617)";
+
+room.innerHTML = `
+  <div class="game-panel">
+    <h2>📖 図鑑ルーム 📖</h2>
+
+    <div class="collection-list">
+      <div>🍀 クローバー：${cloverCount > 0 ? cloverCount : "？？？"}</div>
+      <div>👑 伝説の雑草：${legendGrassCount > 0 ? legendGrassCount : "？？？"}</div>
+      <div>💎 きれいな石：${jewelCount > 0 ? jewelCount : "？？？"}</div>
+      <div>🪨 石ころ：${stoneCount}</div>
+      <div>🌱 雑草：${grassCount}</div>
+      <div>👽 宇宙ポイント：${spacePoints}</div>
+    </div>
+
+    <button type="button" id="collectionClose">戻る</button>
+  </div>
+`;
+
+document.body.appendChild(room);
+
+document.getElementById("collectionClose").onclick = () => {
+  room.remove();
+};
+}
 function showJokePass(title,text){
 
   const joke = document.createElement("div");
@@ -1284,22 +3723,23 @@ let opened = false;
 
 startScreen.onclick = () => {
 
-  if(opened){
-    return;
-  }
+if(opened){
+  return;
+}
 
-  opened = true;
+opened = true;
 
-  startScreen.remove();
-  app.classList.remove("hidden");
+app.classList.remove("hidden");
+startScreen.style.display = "none";
 
-  setTimeout(() => {
-    showMonthlyBonus();
-    showFortune();
-  }, 300);
-
-};
-
+setTimeout(() => {
+  startSeasonEffect();
+  showMonthlyBonus();
+  showFortune();
+  runStartEvent();
+  updateMonthCard();
+}, 300);
+}
 
 
 for(let i=0; i<35; i++){
@@ -1313,6 +3753,7 @@ for(let i=0; i<35; i++){
 
   document.body.appendChild(p);
 }
+
 </script>
 
 </body>
