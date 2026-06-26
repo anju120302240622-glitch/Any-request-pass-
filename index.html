@@ -1268,14 +1268,6 @@ button{
   height:100%;
   object-fit:cover;
 }
-
-.room-rug{
-    position:absolute;
-    width:42%;
-    left:28%;
-    bottom:5%;
-}
-
 .room-bed{
     position:absolute;
     width:48%;
@@ -1804,8 +1796,6 @@ font-size:13px;
       </div> 
       <div class="game-room" onclick="moveSelectedToTap(event)">
         <img src="assets/room/room_base.png" class="room-bg">
-      
-        <img src="assets/room/rug.png" id="roomRug" class="room-rug room-click" onclick="tapFurniture('rug')" style="display:none;">
         <img src="assets/room/bed.png" id="roomBed" class="room-bed room-click" onclick="tapFurniture('bed')" style="display:none;">
         <img src="assets/room/lamp.png" id="roomLamp" class="room-lamp room-click" onclick="tapFurniture('lamp')" style="display:none;">
         <img src="assets/room/sofa.png" id="roomSofa" class="room-sofa room-click" onclick="tapFurniture('sofa')" style="display:none;">
@@ -5480,7 +5470,6 @@ for(let i=0; i<35; i++){
 let selectedFurniture = "";
 let roomLightOn = localStorage.getItem("roomLightOn") === "true";
 const furnitureList = [
-  "rug",
   "bed",
   "lamp",
   "sofa",
@@ -5491,7 +5480,6 @@ const furnitureList = [
 ];
 
 const furnitureNames = {
-  rug:"🩷 ラグ",
   bed:"🛏 ベッド",
   lamp:"💡 ランプ",
   sofa:"🛋 ソファ",
@@ -5636,7 +5624,7 @@ function toggleStoragePanel(){
 }
 
 function isFurnitureUnlocked(name){
-  if(name === "rug" || name === "bed") return true;
+  if(name === "bed" || name === "lamp") return true;
   return localStorage.getItem("unlock_" + name) === "true";
 }
 
