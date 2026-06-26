@@ -1594,7 +1594,15 @@ font-size:13px;
   50%{ transform:translateY(-3px); }
   100%{ transform:translateY(0); }
 }
+.room-light-on .room-bg{
+  filter:brightness(1.18) saturate(1.08);
+}
 
+.room-light-on #roomLamp{
+  filter:drop-shadow(0 0 18px #fde68a)
+         drop-shadow(0 0 34px #facc15)
+         brightness(1.25);
+}
 </style>
 </head>
 
@@ -5470,7 +5478,7 @@ for(let i=0; i<35; i++){
 
 /* ===== ROOM SYSTEM: cleaned version ===== */
 let selectedFurniture = "";
-
+let roomLightOn = localStorage.getItem("roomLightOn") === "true";
 const furnitureList = [
   "rug",
   "bed",
@@ -5515,6 +5523,20 @@ function tapFurniture(name){
   if(el){
     el.classList.add("selected");
   }
+  if(name === "lamp"){
+  roomLightOn = !roomLightOn;
+  localStorage.setItem("roomLightOn", roomLightOn);
+
+  const room = document.querySelector(".game-room");
+  if(room){
+    room.classList.toggle("room-light-on", roomLightOn);
+  }
+
+  showUnlockPop(
+    "💡 LAMP",
+    roomLightOn ? "ライトをつけました♡" : "ライトを消しました"
+  );
+}
 }
 
 function moveSelectedToTap(event){
@@ -5641,7 +5663,13 @@ function updateRoom(){
       }
     }
   });
-
+  const room = document.querySelector(".game-room");
+if(room){
+  room.classList.toggle(
+    "room-light-on",
+    localStorage.getItem("roomLightOn") === "true"
+  );
+}
   renderStorage();
 }
 
