@@ -879,6 +879,7 @@ button{
   border:1px solid rgba(255,255,255,.12);
   box-shadow:0 0 18px rgba(217,70,239,.14);
   text-align:left;
+  position:relative;
 }
 
 .home-title{
@@ -1239,7 +1240,52 @@ button{
   background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(0,0,0,.22));
   box-shadow:0 0 22px rgba(217,70,239,.18);
 }
+.game-room{
+  position:relative;
+  width:100%;
+  max-width:360px;
+  aspect-ratio:16/10;
+  margin:0 auto;
+  overflow:hidden;
+  border-radius:24px;
+  background:#1e1b4b;
+  box-shadow:0 0 24px rgba(217,70,239,.25);
+}
 
+.room-bg{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.room-rug{
+    position:absolute;
+    width:42%;
+    left:28%;
+    bottom:5%;
+}
+
+.room-bed{
+    position:absolute;
+    width:48%;
+    left:6%;
+    bottom:12%;
+}
+
+.room-sofa{
+    position:absolute;
+    width:38%;
+    right:7%;
+    bottom:14%;
+}
+
+.room-lamp{
+    position:absolute;
+    width:32%;
+    right:14%;
+    bottom:22%;
+  }
 .room-wall{
   min-height:210px;
   border-radius:24px;
@@ -1313,6 +1359,95 @@ button{
   background:rgba(0,0,0,.22);
   border:1px solid rgba(255,255,255,.1);
 }
+
+@keyframes unlockPop{
+
+0%{
+transform:scale(0);
+opacity:0;
+filter:brightness(2);
+}
+
+70%{
+transform:scale(1.15);
+opacity:1;
+}
+
+100%{
+transform:scale(1);
+opacity:1;
+}
+
+}
+
+.unlock{
+
+animation:unlockPop .6s ease;
+}
+.feeling-meter{
+  margin-top:14px;
+  padding:12px;
+  border-radius:18px;
+  background:rgba(255,255,255,.08);
+}
+
+.feeling-meter-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:13px;
+  color:#f5d0fe;
+  font-weight:800;
+}
+
+.feeling-bar{
+  margin-top:8px;
+  height:10px;
+  border-radius:999px;
+  background:rgba(0,0,0,.28);
+  overflow:hidden;
+}
+
+#feelingBarFill{
+  height:100%;
+  width:0%;
+  border-radius:999px;
+  background:linear-gradient(90deg,#f9a8d4,#ec4899,#d946ef);
+  box-shadow:0 0 14px rgba(236,72,153,.55);
+  transition:.35s;
+}
+.box-icon-btn{
+  position:absolute;
+  top:14px;
+  right:14px;
+  width:auto;
+  min-width:54px;
+  padding:10px 12px;
+  margin:0;
+  border-radius:999px;
+  background:linear-gradient(135deg,#f472b6,#d946ef);
+  box-shadow:0 0 22px rgba(244,114,182,.55);
+  font-size:22px;
+  z-index:5;
+  display:none;
+}
+
+.box-icon-btn span{
+  margin-left:4px;
+  font-size:14px;
+  font-weight:900;
+}
+
+.box-icon-btn.has-box{
+  display:block;
+  animation:boxPulse 1.2s ease-in-out infinite;
+}
+
+@keyframes boxPulse{
+  0%{ transform:scale(1); }
+  50%{ transform:scale(1.08); box-shadow:0 0 30px rgba(250,204,21,.8); }
+  100%{ transform:scale(1); }
+}
 </style>
 </head>
 
@@ -1338,6 +1473,9 @@ button{
   <div class="tab-content active" id="tab-home">
 
     <div class="home-card">
+      <button type="button" id="boxIconBtn" class="box-icon-btn" onclick="openBonusBox()">
+        🎁<span id="boxIconCount">0</span>
+      </button>
       <div class="home-title">ANY REQUEST PASS</div>
       <div class="home-sub" id="homeTodayText">今日も起動ありがとう♡</div>
       <div class="daily-card">
@@ -1389,6 +1527,7 @@ button{
       <button type="button" onclick="showTab('tab-shop')">🎰<br>SHOP</button>
       <button type="button" onclick="showTab('tab-room')">🏠<br>ROOM</button>
       <button type="button" onclick="showTab('tab-status')">📊<br>STATUS</button>
+      
     </div>
   
   </div>
@@ -1457,8 +1596,7 @@ button{
   
     <div class="home-card">
       <div class="home-title">MEMORIES</div>
-      <div class="home-sub">ふたりの思い出をためる場所♡</div>
-  
+    
       <div class="daily-card">
         <div class="daily-title">💗 今日の好きポイント</div>
         <textarea id="likePointInput" placeholder="今日好きだったところを書く"></textarea>
@@ -1480,9 +1618,8 @@ button{
     <button type="button" class="ghost-btn" onclick="showTab('tab-home')">← HOME</button>
   
     <div class="home-card">
-      <div class="home-title">LOVE ROOM</div>
-      <div class="home-sub">ふたりの愛で育つ部屋♡</div>
-  
+      <div class="home-title">ROOM</div>
+    
       <div class="room-love-card">
         <div class="room-love-title">💗 LOVE <span id="roomLoveText">0</span></div>
         <div class="love-bar">
@@ -1499,16 +1636,30 @@ button{
           <button type="button" onclick="sendEmotion('会いたい')">💭 会いたい</button>
           <button type="button" onclick="sendEmotion('さみしい')">😢 さみしい</button>
         </div>
+        <div class="feeling-meter">
+          <div class="feeling-meter-top">
+            <span>💌 FEELING</span>
+            <strong id="feelingCountText">0 / 10</strong>
+          </div>
+          <div class="feeling-bar">
+            <div id="feelingBarFill"></div>
+          </div>
+        </div>
         <div id="emotionLogText" class="emotion-log">まだ送ってないよ</div>
       </div> 
-      <div class="room-box">
-        <div class="room-wall">
-          <div class="room-item" id="roomLight">🔒</div>
-          <div class="room-item" id="roomBear">🔒</div>
-          <div class="room-item" id="roomSofa">🔒</div>
-          <div class="room-item" id="roomPlant">🔒</div>
-        </div>
-      </div>
+      <div class="game-room">
+
+        <img src="assets/room/room_base.png" class="room-bg">
+    
+        <img src="assets/room/rug.png" id="roomRug" class="room-rug">
+    
+        <img src="assets/room/bed.png" id="roomBed" class="room-bed">
+    
+        <img src="assets/room/sofa.png" id="roomSofa" class="room-sofa">
+    
+        <img src="assets/room/lamp.png" id="roomLamp" class="room-lamp">
+    
+    </div>
   
       <div class="room-reward-list">
         <div>💡 LOVE 100：ハートライト</div>
@@ -1650,6 +1801,8 @@ let boneCount = Number(localStorage.getItem("boneCount")) || 0;        // 🦴 �
 let wingCount = Number(localStorage.getItem("wingCount")) || 0;        // 🪽 天使の羽
 let devilStampCount = Number(localStorage.getItem("devilStampCount")) || 0; // 😈 小悪魔スタンプ
 let emotionHistory = JSON.parse(localStorage.getItem("emotionHistory") || "[]");
+let feelingPoints = Number(localStorage.getItem("feelingPoints")) || 0;
+let bonusBox = Number(localStorage.getItem("bonusBox")) || 0;
 
 const monthMessages = {
   1:"🎍 Happy New Year!",
@@ -1696,6 +1849,7 @@ if(usedMonth === thisMonth){
 renderLikePoints();
 renderMemories();
 updateEmotionLog();
+updateFeelingDisplay();
 updateLoveDisplay();
 updateExtraHome();
 updateHomeCard();
@@ -1714,19 +1868,25 @@ function todayKey(){
   return new Date().toLocaleDateString("ja-JP");
 }
 function sendEmotion(type){
-  addLove(3);
 
-  const now = new Date();
-  const text = `${now.toLocaleDateString("ja-JP")}｜${type}`;
-  emotionHistory.unshift(text);
+const today = todayKey();
 
-  if(emotionHistory.length > 20){
-    emotionHistory = emotionHistory.slice(0,20);
-  }
+if(localStorage.getItem("emotionLoveDate") !== today){
+  addLove(2);
+  localStorage.setItem("emotionLoveDate", today);
+}
 
-  localStorage.setItem("emotionHistory", JSON.stringify(emotionHistory));
-  updateEmotionLog();
-  showFloatingHearts();
+const now = new Date();
+const text = `${now.toLocaleDateString("ja-JP")}｜${type}`;
+emotionHistory.unshift(text);
+
+if(emotionHistory.length > 20){
+  emotionHistory = emotionHistory.slice(0,20);
+}
+
+localStorage.setItem("emotionHistory", JSON.stringify(emotionHistory));
+updateEmotionLog();
+showFloatingHearts();
 }
 
 function updateEmotionLog(){
@@ -3725,24 +3885,36 @@ function todayKey(){
   return new Date().toLocaleDateString();
 }
 function sendEmotion(type){
-  addLove(3);
 
-  const now = new Date();
-  const text = `${now.toLocaleDateString("ja-JP")} ${type}`;
-  emotionHistory.unshift(text);
+const today = todayKey();
 
-  if(emotionHistory.length > 20){
-    emotionHistory = emotionHistory.slice(0,20);
-  }
+if(localStorage.getItem("emotionLoveDate") !== today){
+  addLove(2);
+  localStorage.setItem("emotionLoveDate", today);
+}
 
-  localStorage.setItem("emotionHistory", JSON.stringify(emotionHistory));
+feelingPoints++;
 
-  const log = document.getElementById("emotionLogText");
-  if(log){
-    log.textContent = `ล่าสุด：${type} を送信したよ♡`;
-  }
+if(feelingPoints >= 10){
+  feelingPoints = 0;
+  addLove(10);
+  showUnlockPop("💌 FEELING MAX", "LOVE +10");
+}
 
-  showFloatingHearts();
+localStorage.setItem("feelingPoints", feelingPoints);
+
+const now = new Date();
+const text = `${now.toLocaleDateString("ja-JP")}｜${type}`;
+emotionHistory.unshift(text);
+
+if(emotionHistory.length > 20){
+  emotionHistory = emotionHistory.slice(0,20);
+}
+
+localStorage.setItem("emotionHistory", JSON.stringify(emotionHistory));
+updateEmotionLog();
+updateFeelingDisplay();
+showFloatingHearts();
 }
 
 function showFloatingHearts(){
@@ -4453,13 +4625,99 @@ if(banner && banner.innerText.trim() !== ""){
   monthEffect.textContent = "なし";
 }
 }
+function giveBonusBox(item){
 
+bonusBox++;
+
+localStorage.setItem("bonusBox",bonusBox);
+
+const list = JSON.parse(localStorage.getItem("bonusItems")||"[]");
+
+list.push(item);
+
+localStorage.setItem("bonusItems",JSON.stringify(list));
+
+updateHomeCard();
+
+showUnlockPop("🎁 BONUS BOX","新しいプレゼント！");
+}
+
+function openBonusBox(){
+
+const list = JSON.parse(localStorage.getItem("bonusItems")||"[]");
+
+if(list.length===0){
+    alert("🎁 BOXがありません");
+    return;
+}
+
+const item=list.shift();
+
+bonusBox--;
+
+localStorage.setItem("bonusItems",JSON.stringify(list));
+localStorage.setItem("bonusBox",bonusBox);
+
+unlockFurniture(item);
+
+updateHomeCard();
+}
+function unlockFurniture(item){
+
+localStorage.setItem("unlock_"+item,"true");
+
+updateRoom();
+
+showUnlockPop(
+  "✨ NEW ITEM",
+  item.toUpperCase()+" をGET！"
+);
+
+setTimeout(()=>{
+  showTab("tab-room");
+  updateRoom();
+},1200);
+}
+
+function checkBonusBoxUnlocks(){
+
+if(lovePoints >= 100 && !localStorage.getItem("box100")){
+  localStorage.setItem("box100","1");
+  giveBonusBox("lamp");
+}
+
+if(lovePoints >= 200 && !localStorage.getItem("box200")){
+  localStorage.setItem("box200","1");
+  giveBonusBox("bear");
+}
+
+if(lovePoints >= 300 && !localStorage.getItem("box300")){
+  localStorage.setItem("box300","1");
+  giveBonusBox("sofa");
+}
+}
 function updateHomeCard(){
 
 const pass = document.getElementById("homePassText");
 const event = document.getElementById("homeEventText");
 const point = document.getElementById("homePointText");
 const grass = document.getElementById("homeGrassText");
+const box = document.getElementById("homeBoxText");
+const boxIconBtn = document.getElementById("boxIconBtn");
+const boxIconCount = document.getElementById("boxIconCount");
+
+if(boxIconBtn && boxIconCount){
+  boxIconCount.textContent = bonusBox;
+
+  if(bonusBox > 0){
+    boxIconBtn.classList.add("has-box");
+  }else{
+    boxIconBtn.classList.remove("has-box");
+  }
+}
+if(box){
+    box.textContent = bonusBox;
+}
 
 if(!pass || !event || !point || !grass){
   return;
@@ -4505,7 +4763,6 @@ pop.innerHTML = `
   <div class="small">${label}</div>
   <div class="big">${title}</div>
 `;
-
 document.body.appendChild(pop);
 
 setTimeout(()=>{
@@ -4542,6 +4799,8 @@ function addLove(amount){
   updateLoveDisplay();
   updateExtraHome();
   updateHomeCard();
+  updateRoom();
+  checkBonusBoxUnlocks();
 }
 
 function updateLoveDisplay(){
@@ -4605,7 +4864,7 @@ function updateRoomDisplay(){
   }
 
   if(roomNextRewardText){
-    roomNextRewardText.textContent = "次の解放：" + nextReward;
+    roomNextRewardText.txtContent = "次の解放：" + nextReward;
   }
 
   const light = document.getElementById("roomLight");
@@ -4786,6 +5045,18 @@ function updateEmotionLog(){
     log.textContent = "まだ送ってないよ";
   }else{
     log.textContent = "ล่าสุด：" + emotionHistory[0];
+  }
+}
+function updateFeelingDisplay(){
+  const count = document.getElementById("feelingCountText");
+  const fill = document.getElementById("feelingBarFill");
+
+  if(count){
+    count.textContent = feelingPoints + " / 10";
+  }
+
+  if(fill){
+    fill.style.width = (feelingPoints * 10) + "%";
   }
 }
 function openGachaRoom(){
@@ -4998,7 +5269,35 @@ for(let i=0; i<35; i++){
 
   document.body.appendChild(p);
 }
+function updateRoom(){
 
+const love = lovePoints;
+
+const rug = document.getElementById("roomRug");
+const bed = document.getElementById("roomBed");
+const lamp = document.getElementById("roomLamp");
+const sofa = document.getElementById("roomSofa");
+
+if(rug){
+  rug.style.display =
+    localStorage.getItem("unlock_rug") === "true" ? "block" : "none";
+}
+
+if(bed){
+  bed.style.display =
+    localStorage.getItem("unlock_bed") === "true" ? "block" : "none";
+}
+
+if(lamp){
+  lamp.style.display =
+    localStorage.getItem("unlock_lamp") === "true" ? "block" : "none";
+}
+
+if(sofa){
+  sofa.style.display =
+    localStorage.getItem("unlock_sofa") === "true" ? "block" : "none";
+}
+}
 </script>
 
 </body>
