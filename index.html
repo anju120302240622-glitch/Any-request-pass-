@@ -1580,7 +1580,20 @@ font-size:13px;
 .room-storage.hidden{
   display:none;
 }
+.room-cat{
+  position:absolute;
+  width:18%;
+  left:42%;
+  bottom:16%;
+  z-index:9;
+  animation:catBreath 2.4s ease-in-out infinite;
+}
 
+@keyframes catBreath{
+  0%{ transform:translateY(0); }
+  50%{ transform:translateY(-3px); }
+  100%{ transform:translateY(0); }
+}
 
 </style>
 </head>
@@ -1781,35 +1794,22 @@ font-size:13px;
         </div>
         <div id="emotionLogText" class="emotion-log">まだ送ってないよ</div>
       </div> 
-      <div class="game-room" onclick="moveSelectedToTap(event)"></div>
-
+      <div class="game-room" onclick="moveSelectedToTap(event)">
         <img src="assets/room/room_base.png" class="room-bg">
-    
-        <img src="assets/room/rug.png" id="roomRug" class="room-rug">
-    
-        <img src="assets/room/bed.png" id="roomBed" class="room-bed">
-        <img src="assets/room/sofa.png" id="roomSofa" class="room-sofa room-click" onclick="tapFurniture('sofa')" style="display:none;">
-
+      
+        <img src="assets/room/rug.png" id="roomRug" class="room-rug room-click" onclick="tapFurniture('rug')" style="display:none;">
+        <img src="assets/room/bed.png" id="roomBed" class="room-bed room-click" onclick="tapFurniture('bed')" style="display:none;">
         <img src="assets/room/lamp.png" id="roomLamp" class="room-lamp room-click" onclick="tapFurniture('lamp')" style="display:none;">
-        <img id="roomTvStand" class="room-tvstand room-click" src="assets/room/tvstand.png" onclick="tapFurniture('tvstand')" style="display:none;">
-
-        <img id="roomTv" class="room-tv room-click" src="assets/room/tv.png" onclick="tapFurniture('tv')" style="display:none;">
-        
-        <img id="roomGame" class="room-game room-click" src="assets/room/game.png" onclick="tapFurniture('game')" style="display:none;"> 
-       
-    </div>
+        <img src="assets/room/sofa.png" id="roomSofa" class="room-sofa room-click" onclick="tapFurniture('sofa')" style="display:none;">
+        <img src="assets/room/tvstand.jpg" id="roomTvstand" class="room-tvstand room-click" onclick="tapFurniture('tvstand')" style="display:none;">
+        <img src="assets/room/tv.jpg" id="roomTv" class="room-tv room-click" onclick="tapFurniture('tv')" style="display:none;">
+        <img src="assets/room/game.jpg" id="roomGame" class="room-game room-click" onclick="tapFurniture('game')" style="display:none;">
+        <img src="assets/room/cat.png" id="roomCat" class="room-cat room-click" onclick="tapFurniture('cat')" style="display:none;">
+      </div>
     <div class="room-control-panel">
       <div class="daily-title">🛠 ROOM EDIT</div>
     
       <div id="selectedFurnitureText">選択中：なし</div>
-    
-      <div class="room-move-grid">
-        <button type="button" onclick="moveFurniture('up')">↑</button>
-        <button type="button" onclick="moveFurniture('left')">←</button>
-        <button type="button" onclick="moveFurniture('right')">→</button>
-        <button type="button" onclick="moveFurniture('down')">↓</button>
-      </div>
-
       <div class="room-storage">
         <button type="button" onclick="toggleStoragePanel()">
           📦 しまう / 出す
@@ -1820,7 +1820,7 @@ font-size:13px;
             <div id="storageList"></div>
           </div>
     
-    </div> 
+        </div> 
       <div class="room-reward-list">
         <div>💡 LOVE 100：ハートライト</div>
         <div>🧸 LOVE 200：ぬいぐるみ</div>
@@ -4887,7 +4887,10 @@ if(lovePoints>=600 && !localStorage.getItem("box600")){
     localStorage.setItem("box600","1");
     giveBonusBox("game");
 }
-// ▲ここまで追加
+if(lovePoints>=700 && !localStorage.getItem("box700")){
+  localStorage.setItem("box700","1");
+  giveBonusBox("cat");
+}
 
 }
 }
@@ -5464,296 +5467,185 @@ for(let i=0; i<35; i++){
 
   document.body.appendChild(p);
 }
-function updateRoom(){
 
-const love = lovePoints;
-
-const rug = document.getElementById("roomRug");
-const bed = document.getElementById("roomBed");
-const lamp = document.getElementById("roomLamp");
-const sofa = document.getElementById("roomSofa");
-const tvstand = document.getElementById("roomTvStand");
-const tv = document.getElementById("roomTv");
-const game = document.getElementById("roomGame");
-
-if(tvstand){
-    tvstand.style.display =
-    localStorage.getItem("unlock_tvstand")=="true"
-    ? "block":"none";
-}
-
-if(tv){
-    tv.style.display =
-    localStorage.getItem("unlock_tv")=="true"
-    ? "block":"none";
-}
-
-if(game){
-    game.style.display =
-    localStorage.getItem("unlock_game")=="true"
-    ? "block":"none";
-}
-
-if(rug){
-  rug.style.display =
-    localStorage.getItem("unlock_rug") === "true" ? "block" : "none";
-}
-
-if(bed){
-  bed.style.display =
-    localStorage.getItem("unlock_bed") === "true" ? "block" : "none";
-}
-
-if(lamp){
-  lamp.style.display =
-    localStorage.getItem("unlock_lamp") === "true" ? "block" : "none";
-}
-
-if(sofa){
-  sofa.style.display =
-    localStorage.getItem("unlock_sofa") === "true" ? "block" : "none";
-}
-applyFurniturePositions();
-updateStorageList();
-
-Object.keys(furnitureIdMap).forEach(item=>{
-  const el = document.getElementById(furnitureIdMap[item]);
-  if(!el) return;
-
-  if(localStorage.getItem("stored_"+item) === "true"){
-    el.style.display = "none";
-  }
-});
-}
-
+/* ===== ROOM SYSTEM: cleaned version ===== */
 let selectedFurniture = "";
 
-const furnitureIdMap = {
-  lamp:"roomLamp",
-  sofa:"roomSofa",
-  tvstand:"roomTvStand",
-  tv:"roomTv",
-  game:"roomGame"
+const furnitureList = [
+  "rug",
+  "bed",
+  "lamp",
+  "sofa",
+  "tvstand",
+  "tv",
+  "game",
+  "cat"
+];
+
+const furnitureNames = {
+  rug:"🩷 ラグ",
+  bed:"🛏 ベッド",
+  lamp:"💡 ランプ",
+  sofa:"🛋 ソファ",
+  tvstand:"🪑 テレビ台",
+  tv:"📺 テレビ",
+  game:"🎮 ゲーム機",
+  cat:"🐱 ねこ"
 };
 
-function tapFurniture(item){
-  console.log("tap", item);
+function getFurnitureEl(name){
+  return document.getElementById(
+    "room" + name.charAt(0).toUpperCase() + name.slice(1)
+  );
+}
 
-  selectedFurniture = item;
+function tapFurniture(name){
+  selectedFurniture = name;
+
+  const text = document.getElementById("selectedFurnitureText");
+  if(text){
+    text.textContent = "選択中：" + (furnitureNames[name] || name);
+  }
 
   document.querySelectorAll(".room-click").forEach(el=>{
     el.classList.remove("selected");
   });
 
-  const el = document.getElementById(furnitureIdMap[item]);
+  const el = getFurnitureEl(name);
   if(el){
     el.classList.add("selected");
   }
-
-  const text = document.getElementById("selectedFurnitureText");
-  if(text){
-    text.textContent = "選択中：" + item;
-  }
-
-  showUnlockPop("ROOM EDIT", item + " を選択しました");
 }
 
+function moveSelectedToTap(event){
+  if(!selectedFurniture) return;
 
-function getFurnitureEl(){
-  if(!selectedFurniture) return null;
-  return document.getElementById(furnitureIdMap[selectedFurniture]);
-}
-
-function moveFurniture(dir){
-
-  const el = getFurnitureEl();
-
-  if(!el){
-    showUnlockPop("ROOM EDIT", "家具を選んでね");
+  if(event.target.classList.contains("room-click")){
     return;
   }
 
-  let left = Number(localStorage.getItem("pos_"+selectedFurniture+"_left"));
-  let bottom = Number(localStorage.getItem("pos_"+selectedFurniture+"_bottom"));
+  const room = event.currentTarget;
+  const el = getFurnitureEl(selectedFurniture);
+  if(!el) return;
 
-  if(!left && left !== 0){
-    left = parseFloat(getComputedStyle(el).left) / el.parentElement.clientWidth * 100;
-  }
+  const rect = room.getBoundingClientRect();
+  const x = event.clientX - rect.left;
+  const y = event.clientY - rect.top;
 
-  if(!bottom && bottom !== 0){
-    bottom = parseFloat(getComputedStyle(el).bottom) / el.parentElement.clientHeight * 100;
-  }
+  let left = ((x - el.offsetWidth / 2) / rect.width) * 100;
+  let top = ((y - el.offsetHeight / 2) / rect.height) * 100;
 
-  const step = 3;
-
-  if(dir === "left") left -= step;
-  if(dir === "right") left += step;
-  if(dir === "up") bottom += step;
-  if(dir === "down") bottom -= step;
-
-  left = Math.max(0, Math.min(90, left));
-  bottom = Math.max(0, Math.min(90, bottom));
+  left = Math.max(0, Math.min(92, left));
+  top = Math.max(0, Math.min(92, top));
 
   el.style.left = left + "%";
+  el.style.top = top + "%";
   el.style.right = "auto";
-  el.style.bottom = bottom + "%";
+  el.style.bottom = "auto";
 
-  localStorage.setItem("pos_"+selectedFurniture+"_left", left);
-  localStorage.setItem("pos_"+selectedFurniture+"_bottom", bottom);
-}
-function moveSelectedToTap(event){
+  localStorage.setItem("roomPos_" + selectedFurniture, JSON.stringify({
+    left:left,
+    top:top
+  }));
 
-if(!selectedFurniture) return;
-
-if(event.target.classList.contains("room-click")){
-  return;
+  showUnlockPop("ROOM EDIT", "ここに置いたよ");
 }
 
-const room = event.currentTarget;
-const el = document.getElementById(furnitureIdMap[selectedFurniture]);
+function renderStorage(){
+  const box = document.getElementById("storageList");
+  if(!box) return;
 
-if(!el) return;
+  box.innerHTML = furnitureList.map(name=>{
+    const hidden = localStorage.getItem("hide_" + name) === "true";
+    const unlocked = isFurnitureUnlocked(name);
+    const label = furnitureNames[name] || name;
 
-const rect = room.getBoundingClientRect();
+    if(!unlocked){
+      return `
+        <div class="storage-item" style="opacity:.45;">
+          <span>🔒 ${label}</span>
+          <button type="button" disabled>未解放</button>
+        </div>
+      `;
+    }
 
-const x = event.clientX - rect.left;
-const y = event.clientY - rect.top;
-
-const leftPercent = (x / rect.width) * 100;
-const bottomPercent = 100 - (y / rect.height) * 100;
-
-el.style.left = leftPercent + "%";
-el.style.right = "auto";
-el.style.bottom = bottomPercent + "%";
-
-localStorage.setItem("pos_"+selectedFurniture+"_left", leftPercent);
-localStorage.setItem("pos_"+selectedFurniture+"_bottom", bottomPercent);
-
-showUnlockPop("ROOM EDIT", "ここに置いたよ");
+    return `
+      <div class="storage-item">
+        <span>${hidden ? "⬜" : "🟪"} ${label}</span>
+        <button type="button" onclick="toggleFurniture('${name}')">
+          ${hidden ? "出す" : "しまう"}
+        </button>
+      </div>
+    `;
+  }).join("");
 }
-function toggleFurnitureStorage(){
 
-  if(!selectedFurniture){
-    showUnlockPop("ROOM EDIT", "家具を選んでね");
+function toggleFurniture(name){
+  if(!isFurnitureUnlocked(name)){
+    showUnlockPop("ROOM EDIT", "まだ未解放だよ");
     return;
   }
 
-  const key = "stored_"+selectedFurniture;
-  const nowStored = localStorage.getItem(key) === "true";
+  const hidden = localStorage.getItem("hide_" + name) === "true";
+  const nextHidden = !hidden;
 
-  localStorage.setItem(key, nowStored ? "false" : "true");
+  localStorage.setItem("hide_" + name, nextHidden ? "true" : "false");
+
+  if(selectedFurniture === name && nextHidden){
+    selectedFurniture = "";
+    const text = document.getElementById("selectedFurnitureText");
+    if(text) text.textContent = "選択中：なし";
+
+    document.querySelectorAll(".room-click").forEach(el=>{
+      el.classList.remove("selected");
+    });
+  }
 
   updateRoom();
-
-  showUnlockPop(
-    "ROOM EDIT",
-    nowStored ? "部屋に出しました" : "しまいました"
-  );
+  renderStorage();
 }
 
-function applyFurniturePositions(){
+function toggleStoragePanel(){
+  const panel = document.getElementById("storagePanel");
+  if(!panel) return;
 
-  Object.keys(furnitureIdMap).forEach(item=>{
+  panel.classList.toggle("hidden");
+  renderStorage();
+}
 
-    const el = document.getElementById(furnitureIdMap[item]);
+function isFurnitureUnlocked(name){
+  if(name === "rug" || name === "bed") return true;
+  return localStorage.getItem("unlock_" + name) === "true";
+}
+
+function updateRoom(){
+  furnitureList.forEach(name=>{
+    const el = getFurnitureEl(name);
     if(!el) return;
 
-    const left = localStorage.getItem("pos_"+item+"_left");
-    const bottom = localStorage.getItem("pos_"+item+"_bottom");
+    const unlocked = isFurnitureUnlocked(name);
+    const hidden = localStorage.getItem("hide_" + name) === "true";
 
-    if(left !== null){
-      el.style.left = left + "%";
-      el.style.right = "auto";
-    }
+    el.style.display = unlocked && !hidden ? "block" : "none";
 
-    if(bottom !== null){
-      el.style.bottom = bottom + "%";
+    const saved = localStorage.getItem("roomPos_" + name);
+    if(saved){
+      try{
+        const pos = JSON.parse(saved);
+        el.style.left = pos.left + "%";
+        el.style.top = pos.top + "%";
+        el.style.right = "auto";
+        el.style.bottom = "auto";
+      }catch(e){
+        localStorage.removeItem("roomPos_" + name);
+      }
     }
   });
+
+  renderStorage();
 }
-const furnitureNames={
-
-lamp:"💡 ランプ",
-
-sofa:"🛋 ソファ",
-
-tvstand:"🪑 テレビ台",
-
-tv:"📺 テレビ",
-
-game:"🎮 ゲーム機"
-
-};
-
-function updateStorageList(){
-
-const box=document.getElementById("storageList");
-
-if(!box)return;
-
-box.innerHTML="";
-
-Object.keys(furnitureNames).forEach(item=>{
-
-const stored=
-localStorage.getItem("stored_"+item)=="true";
-
-box.innerHTML+=`
-
-<div class="storage-item">
-
-<span>
-
-${stored?"⬜":"🟪"}
-
-${furnitureNames[item]}
-
-</span>
-
-<button onclick="toggleStorage('${item}')">
-
-${stored?"出す":"しまう"}
-
-</button>
-
-</div>
-
-`;
-
-});
-
-}
-function toggleStorage(item){
-
-const now=
-
-localStorage.getItem("stored_"+item)=="true";
-
-localStorage.setItem(
-
-"stored_"+item,
-
-(!now).toString()
-
-);
 
 updateRoom();
-
-updateStorageList();
-
-}
-function toggleStoragePanel(){
-
-const panel = document.getElementById("storagePanel");
-
-if(!panel) return;
-
-panel.classList.toggle("hidden");
-
-updateStorageList();
-}
-
-
 
 </script>
 </body>
